@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.android.helloworld.DataObjects.Plate;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
@@ -20,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        System.out.println("Lplplplplp");
         email = (EditText)findViewById(R.id.emailText);
         password = (EditText)findViewById(R.id.passwordText);
         login = (Button)findViewById(R.id.loginButton);
@@ -39,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+        System.out.println("Lplplplplp");
+        Plate.addNewPlateToDB("Ofir", "Hamburger", "Moses");
+        Plate.getPlateFromDB("Hamburger");
+
 
     }
 
