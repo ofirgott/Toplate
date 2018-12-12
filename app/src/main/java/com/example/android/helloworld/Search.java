@@ -51,7 +51,7 @@ public class Search extends AppCompatActivity {
         resultsExample.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(Search.this, ResulsActivity.class);
+                Intent intent = new Intent(Search.this, ResultsActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView_plate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="3dp"
+        android:text="plate"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_plate"
+        android:layout_alignStart="@+id/textView_plate"
+        android:text="restaurant name"
+        android:textSize="18sp"
+        android:layout_toLeftOf="@id/ratingBar4"
+        android:layout_alignLeft="@+id/textView_plate" />
+
+    <TextView
+        android:id="@+id/textView_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_restaurant"
+        android:layout_alignStart="@+id/textView_plate"
+        android:text="address"
+        android:textSize="18sp"
+        android:layout_alignLeft="@+id/textView_plate" />
+
+    <RatingBar
+        android:id="@+id/ratingBar4"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_plate"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:rating="4" />
+</RelativeLayout>

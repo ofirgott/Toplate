@@ -26,7 +26,7 @@
         <activity android:name=".DishActivity" />
         <activity android:name=".AddReviewActivity" />
         <activity android:name=".GameActivity" />
-        <activity android:name=".ResulsActivity"></activity>
+        <activity android:name=".ResultsActivity"></activity>
     </application>
 
 </manifest>
