@@ -10,8 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android.helloworld.DataObjects.Plate;
+import com.example.android.helloworld.DataObjects.Review;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private EditText email;
@@ -24,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("Lplplplplp");
         email = (EditText)findViewById(R.id.emailText);
         password = (EditText)findViewById(R.id.passwordText);
         login = (Button)findViewById(R.id.loginButton);
@@ -44,13 +48,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        System.out.println("Lplplplplp");
-        Plate.addNewPlateToDB("Ofir", "Hamburger", "Moses");
-        Plate.getPlateFromDB("Hamburger");
+        Review review = new Review("owner1", 4, "best dish ever");
+        Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Spicy", "Noodles"), review);
+        //List<String> allRestPlates = Plate.getAllRestPlates("Jiraff");
+        //System.out.println(allRestPlates);
 
+        Review newRev = new Review("owner3", 3);
+
+        Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Cilantro", "Cream"), newRev);
 
     }
 
