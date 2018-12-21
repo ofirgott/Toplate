@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private Button login;
     private Button signUp;
+    private Button resultsExample;
     private int counter = 5;
 
     @Override
@@ -25,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText)findViewById(R.id.passwordText);
         login = (Button)findViewById(R.id.loginButton);
         signUp = (Button)findViewById(R.id.signUpButton);
+
+        resultsExample = (Button)findViewById(R.id.tempResultsButton);
+        resultsExample.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         login.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -39,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 

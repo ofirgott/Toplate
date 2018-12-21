@@ -1,6 +1,5 @@
 package com.example.android.helloworld;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,22 +8,36 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class DishActivity extends AppCompatActivity {
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+
+
+
+public class DishActivity extends Fragment {
 
     final String[] reviewers_names = new String[] { "Oz", "Shahar", "Moni", "Ofir", "Chen", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
     final String[] values = new String[] { "SO FUCKING DELICIOUS", "This dish is shit, lots of Kusbara", "It's ok, but I wouldn't try it again. But if it's a cold day and you want something that warms you up so you wouldn't feel lonely, then it's ok. Overall it's ok, like really ok", "Yummm", "I wish I could marry Bok Choy <3", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
     final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dish);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_dish,container,false);
 
-        ListView reviewsList = (ListView)findViewById(R.id.reviewsList);
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListView reviewsList = (ListView)getView().findViewById(R.id.reviewsList);
 
         DishActivity.ReviewsAdapter revAdapter = new DishActivity.ReviewsAdapter();
 
         reviewsList.setAdapter(revAdapter);
+
     }
 
     class ReviewsAdapter extends BaseAdapter {

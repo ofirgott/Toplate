@@ -1,5 +1,6 @@
 package com.example.android.helloworld;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -40,6 +41,14 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        if(savedInstanceState==null){
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_container,new SearchFragment());
+            ft.addToBackStack("search");
+            ft.commit();
+
+        }
 /*
         if(savedInstanceState==null){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment()).commit();
@@ -106,7 +115,25 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         }
         else
         {
-            super.onBackPressed();
+            int topStackIndex = getSupportFragmentManager().getBackStackEntryCount()-1;
+            String topStackName = getSupportFragmentManager().getBackStackEntryAt(topStackIndex).getName();
+            if(topStackName.equals("search")) {
+                super.onBackPressed();
+                //if we want to get out of the app - getSupportFragmentManager().popBackStack();
+            }
+            else if(topStackName.equals("game")||topStackName.equals("addReview")||topStackName.equals("contact")){
+            //also from results
+                getSupportFragmentManager().popBackStack("search",0);
+            }
+            else{
+                super.onBackPressed();
+            }
+            /*
+            else if(topStackName.equals("dish"))
+                getSupportFragmentManager().popBackStack("results",0);
+            else if(topStackName.equals("report"))
+                getSupportFragmentManager().popBackStack("dish",0);
+             */
         }
     }
 
@@ -115,8 +142,12 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
     //NEXT TIME - FIGURE OUT HE WHOLE FRAGMENTS VS ACTIVITIES PART!
 
         switch(item.getItemId()){
+            case R.id.nav_add_plate:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AddReviewActivity()).addToBackStack("addReview").commit();
+        }
+        switch(item.getItemId()){
             case R.id.nav_gain_points:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment()).addToBackStack("game").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new GameActivity()).addToBackStack("game").commit();
         }
         switch(item.getItemId()){
             case R.id.nav_contact:
@@ -124,7 +155,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         }
         switch(item.getItemId()){
             case R.id.nav_sign_out:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment()).addToBackStack("exit").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new DishActivity()).addToBackStack("exit").commit();
         }
 
         drawer.closeDrawer(GravityCompat.START);
