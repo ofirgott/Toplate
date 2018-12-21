@@ -10,7 +10,17 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class ResultsActivity extends AppCompatActivity {
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+
+
+public class ResultsActivity extends Fragment {
 
 
     final String[] plates = new String[] { "Sorbet","Red Bomb","cake", "Mamas Chocolate-Fudge Donuts with red frosting and gummy bears","mana","mana","mana","mana","mana","mana","mana","mana","mana","mana"};
@@ -18,18 +28,22 @@ public class ResultsActivity extends AppCompatActivity {
     final String[] restaurants_addresses = new String[] { "Tel Aviv","Petah Tikva","Modi'in", "aaaaaaaaa saaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaa aaaaaaa","address","address","address","address","address","address","address","address","address","address"};
     final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
-
-        ListView reviewsList = (ListView)findViewById(R.id.resultsList);
-
-        resultsAdapter resAdapter = new resultsAdapter();
-
-        reviewsList.setAdapter(resAdapter);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_results,container,false);
+        return root;
     }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListView resultsList = (ListView)getView().findViewById(R.id.resultsList);
+        resultsAdapter resAdapter = new resultsAdapter();
+        resultsList.setAdapter(resAdapter);
+    }
+
 
     class resultsAdapter extends BaseAdapter{
 

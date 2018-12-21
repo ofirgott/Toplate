@@ -116,16 +116,17 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         else
         {
             int topStackIndex = getSupportFragmentManager().getBackStackEntryCount()-1;
+
             String topStackName = getSupportFragmentManager().getBackStackEntryAt(topStackIndex).getName();
-            if(topStackName.equals("search")) {
+            if (topStackName.equals("search")) {
+                super.onBackPressed();
                 super.onBackPressed();
                 //if we want to get out of the app - getSupportFragmentManager().popBackStack();
             }
-            else if(topStackName.equals("game")||topStackName.equals("addReview")||topStackName.equals("contact")){
-            //also from results
-                getSupportFragmentManager().popBackStack("search",0);
+            else if (topStackName.equals("game") || topStackName.equals("addReview") || topStackName.equals("contact") || topStackName.equals("results")) {
+                getSupportFragmentManager().popBackStack("search", 0);
             }
-            else{
+            else {
                 super.onBackPressed();
             }
             /*
@@ -134,6 +135,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             else if(topStackName.equals("report"))
                 getSupportFragmentManager().popBackStack("dish",0);
              */
+
         }
     }
 

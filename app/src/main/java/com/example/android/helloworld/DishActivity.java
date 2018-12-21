@@ -25,7 +25,6 @@ public class DishActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_dish,container,false);
-
         return root;
     }
 
