@@ -126,6 +126,11 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             else if (topStackName.equals("game") || topStackName.equals("addReview") || topStackName.equals("contact") || topStackName.equals("results")) {
                 getSupportFragmentManager().popBackStack("search", 0);
             }
+            else if (topStackName.equals("dish")) {
+                getSupportFragmentManager().popBackStack("results", 0);
+            }
+
+
             else {
                 super.onBackPressed();
             }
@@ -154,10 +159,6 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         switch(item.getItemId()){
             case R.id.nav_contact:
                  getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment(),"contact").addToBackStack("contact").commit();
-        }
-        switch(item.getItemId()){
-            case R.id.nav_sign_out:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new DishActivity()).addToBackStack("exit").commit();
         }
 
         drawer.closeDrawer(GravityCompat.START);
