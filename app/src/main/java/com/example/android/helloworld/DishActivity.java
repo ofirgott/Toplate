@@ -20,7 +20,7 @@ public class DishActivity extends Fragment {
     private TextView _restaurantName;
     private TextView _restaurantAddress;
     private RatingBar _ratingbar;
-    private String[] _reviewersNames;
+    private String[] _reviewers_names;
     private String[] _reviewsContent;
     private float[] _ratings;
 
@@ -39,7 +39,7 @@ public class DishActivity extends Fragment {
         _restaurantName.setText(b.getString("restaurantName"));
         _restaurantAddress.setText(b.getString("restaurantAddress"));
         _ratingbar.setRating(b.getFloat("numStars"));
-        _reviewersNames = b.getStringArray("reviewersNames");
+        _reviewers_names = b.getStringArray("reviewersNames");
         _reviewsContent = b.getStringArray("reviewsContent");
         _ratings = b.getFloatArray("ratings");
 
@@ -80,7 +80,7 @@ public class DishActivity extends Fragment {
             RatingBar ratingBar = (RatingBar)view.findViewById(R.id.ratingBar5);
 
 
-            textview_reviewer_name.setText(_reviewersNames[position]);
+            textview_reviewer_name.setText(_reviewers_names[position]);
             textview_review_content.setText(_reviewsContent[position]);
             ratingBar.setRating(_ratings[position]);
 

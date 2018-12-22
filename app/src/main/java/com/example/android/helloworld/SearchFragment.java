@@ -17,7 +17,7 @@ public class SearchFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_search,container,false);
 
         // Inflate the layout for this fragment
-        Button searchButton = (Button) root.findViewById(R.id.searchButton);
+        Button searchButton = (Button) root.findViewById(R.id.submitButton);
 
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
