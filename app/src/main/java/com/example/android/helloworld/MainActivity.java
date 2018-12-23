@@ -1,72 +1,71 @@
 package com.example.android.helloworld;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
-import com.example.android.helloworld.DataObjects.Plate;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText email;
-    private EditText password;
-    private Button login;
-    private Button signUp;
-    private int counter = 5;
+    private FirebaseAuth mFirebaseAuth;
+    public static final int RC_SIGN_IN = 9001;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    List<AuthUI.IdpConfig> providers = Arrays.asList(
+
+            new AuthUI.IdpConfig.PhoneBuilder().build(),
+            new AuthUI.IdpConfig.GoogleBuilder().build(),
+            new AuthUI.IdpConfig.EmailBuilder().build());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("Lplplplplp");
-        email = (EditText)findViewById(R.id.emailText);
-        password = (EditText)findViewById(R.id.passwordText);
-        login = (Button)findViewById(R.id.loginButton);
-        signUp = (Button)findViewById(R.id.signUpButton);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth.signOut();
 
-        login.setOnClickListener(new View.OnClickListener(){
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onClick(View view){
-                Validate(email.getText().toString(),password.getText().toString());
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent a = new Intent(MainActivity.this, MenuActivity.class);
+                    startActivity(a);
+                     Toast.makeText(MainActivity.this, "User Signed In", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setAvailableProviders(providers)
+                                    .setIsSmartLockEnabled(false)
+                                    .setLogo(R.mipmap.ic_launcher_foreground)
+                                    .build(),
+                            RC_SIGN_IN
+                    );
+
+                }
             }
-        });
-        signUp.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        System.out.println("Lplplplplp");
-        Plate.addNewPlateToDB("Ofir", "Hamburger", "Moses");
-        Plate.getPlateFromDB("Hamburger");
-
-
+        };
     }
 
-    private void Validate(String userEmail, String userPassword){
-        if (userEmail.equals("") && userPassword.equals(""))
-        {
-            Intent intent = new Intent(MainActivity.this, Search.class);
-            startActivity(intent);
-        }
-        else
-        {
-            counter--;
-            if(counter==0)
-            {
-                login.setEnabled(false);
-            }
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+
     }
 }
+
