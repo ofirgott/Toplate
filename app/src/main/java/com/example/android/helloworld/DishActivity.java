@@ -1,9 +1,11 @@
 package com.example.android.helloworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -15,15 +17,16 @@ import android.view.LayoutInflater;
 
 
 
-public class DishActivity extends Fragment {
-    private TextView _plateName;
-    private TextView _restaurantName;
-    private TextView _restaurantAddress;
-    private RatingBar _ratingbar;
-    private String[] _reviewers_names;
-    private String[] _reviewsContent;
-    private float[] _ratings;
-
+    public class DishActivity extends Fragment {
+        private TextView _plateName;
+        private TextView _restaurantName;
+        private TextView _restaurantAddress;
+        private TextView  _plateTags;
+        private RatingBar _ratingbar;
+        private String[] _reviewers_names;
+        private String[] _reviewsContent;
+        private float[] _ratings;
+        private Button reportExample;
 
     @Nullable
     @Override
@@ -33,6 +36,16 @@ public class DishActivity extends Fragment {
         _restaurantName = root.findViewById(R.id.restaurantName);
         _restaurantAddress = root.findViewById(R.id.restaurantAddress);
         _ratingbar = root.findViewById(R.id.ratingBar);
+        _plateTags = root.findViewById(R.id.plateTags);
+        reportExample = (Button) root.findViewById(R.id.reportExample);
+        reportExample.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getActivity(), reportReview.class);
+                startActivity(intent);
+            }
+        });
+
 
         Bundle b = getArguments();
         _plateName.setText(b.getString("plateName"));
@@ -42,6 +55,18 @@ public class DishActivity extends Fragment {
         _reviewers_names = b.getStringArray("reviewersNames");
         _reviewsContent = b.getStringArray("reviewsContent");
         _ratings = b.getFloatArray("ratings");
+
+        String[] plateTagsArray = b.getStringArray("plateTags");
+        String tagsString = "Tags: ";
+        for (int i=0; i<plateTagsArray.length; i++){
+            tagsString+=plateTagsArray[i];
+            if(i<plateTagsArray.length-1) {
+                tagsString+=", ";
+            }
+        }
+        _plateTags.setText(tagsString);
+
+
 
         return root;
     }

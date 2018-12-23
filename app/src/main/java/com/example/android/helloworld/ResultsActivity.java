@@ -49,6 +49,7 @@ public class ResultsActivity extends Fragment {
                 final String[] reviewersNames  = new String[] { "Oz", "Shahar", "Moni", "Ofir", "Chen", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
                 final String[] reviewsContent = new String[] { "SO FUCKING DELICIOUS", "This dish is shit, lots of Kusbara", "It's ok, but I wouldn't try it again. But if it's a cold day and you want something that warms you up so you wouldn't feel lonely, then it's ok. Overall it's ok, like really ok", "Yummm", "I wish I could marry Bok Choy <3", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
                 final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
+                final String[] plateTags = {"Bok Choy", "Beef", "Noodles", "Soy", "Asian", "Spicy", "Kosher"};
 
                 DishActivity plateFragment = new DishActivity();
                 Bundle arguments = new Bundle();
@@ -59,6 +60,7 @@ public class ResultsActivity extends Fragment {
                 arguments.putStringArray("reviewersNames",reviewersNames);
                 arguments.putStringArray("reviewsContent",reviewsContent);
                 arguments.putFloatArray("ratings",ratings);
+                arguments.putStringArray("plateTags",plateTags);
 
                 plateFragment.setArguments(arguments);
 
