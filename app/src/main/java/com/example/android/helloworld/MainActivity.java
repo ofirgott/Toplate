@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
@@ -50,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         Review review = new Review("owner1", 4, "best dish ever");
         Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Spicy", "Noodles"), review);
-        //List<String> allRestPlates = Plate.getAllRestPlates("Jiraff");
-        //System.out.println(allRestPlates);
 
         Review newRev = new Review("owner3", 3);
 
