@@ -129,7 +129,9 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             else if (topStackName.equals("dish")) {
                 getSupportFragmentManager().popBackStack("results", 0);
             }
-
+            else if (topStackName.equals("addReview2")) {
+                getSupportFragmentManager().popBackStack("addReview", 0);
+            }
 
             else {
                 super.onBackPressed();
