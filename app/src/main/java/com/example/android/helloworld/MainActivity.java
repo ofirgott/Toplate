@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
             new AuthUI.IdpConfig.PhoneBuilder().build(),
             new AuthUI.IdpConfig.GoogleBuilder().build(),
-            new AuthUI.IdpConfig.EmailBuilder().build());
+            new AuthUI.IdpConfig.EmailBuilder().build(),
+            new AuthUI.IdpConfig.FacebookBuilder().build());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
