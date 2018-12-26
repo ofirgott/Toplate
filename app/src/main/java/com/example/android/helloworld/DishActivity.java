@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -26,7 +27,6 @@ import android.view.LayoutInflater;
         private String[] _reviewers_names;
         private String[] _reviewsContent;
         private float[] _ratings;
-        private Button reportExample;
 
     @Nullable
     @Override
@@ -37,14 +37,6 @@ import android.view.LayoutInflater;
         _restaurantAddress = root.findViewById(R.id.restaurantAddress);
         _ratingbar = root.findViewById(R.id.ratingBar);
         _plateTags = root.findViewById(R.id.plateTags);
-        reportExample = (Button) root.findViewById(R.id.reportExample);
-        reportExample.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getActivity(), reportReview.class);
-                startActivity(intent);
-            }
-        });
 
 
         Bundle b = getArguments();
@@ -97,12 +89,25 @@ import android.view.LayoutInflater;
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent) {
+        public View getView(final int position, View view, ViewGroup parent) {
             view =  getLayoutInflater().inflate(R.layout.review_item,null);
 
             TextView textview_reviewer_name = (TextView)view.findViewById(R.id.textView_reviewer_name);
             TextView textview_review_content = (TextView)view.findViewById(R.id.textView_review_content);
             RatingBar ratingBar = (RatingBar)view.findViewById(R.id.ratingBar5);
+            ImageButton reportReview = (ImageButton)view.findViewById(R.id.reportReview);
+
+
+            reportReview.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    Intent intent = new Intent(getActivity(), reportReview.class);
+                    intent.putExtra("reviewIndex",Integer.toString(position));
+                    intent.putExtra("plateId","2222");
+                    intent.putExtra("userId","3333");
+                    startActivity(intent);
+                }
+            });
 
 
             textview_reviewer_name.setText(_reviewers_names[position]);

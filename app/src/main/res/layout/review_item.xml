@@ -37,7 +37,7 @@
         android:layout_below="@id/textView_reviewer_name"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        app:srcCompat="@android:drawable/presence_busy" />
+        app:srcCompat="@drawable/ic_report_black_24dp" />
 
     <TextView
         android:id="@+id/textView_review_content"
