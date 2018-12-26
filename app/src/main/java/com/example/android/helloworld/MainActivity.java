@@ -50,13 +50,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Review review = new Review("owner1", 4, "best dish ever");
-        Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Spicy", "Noodles"), review);
+        //Review review = new Review("owner1", 4, "best dish ever");
+        //Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Spicy", "Noodles"), review);
 
-        Review newRev = new Review("owner3", 3);
+        //Review newRev = new Review("owner3", 3);
 
-        Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Cilantro", "Cream"), newRev);
+        //Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Cilantro", "Cream"), newRev);
 
+        List<String> plateNames = Plate.getAllRestPlates("Jiraff");
+        System.out.println(plateNames);
     }
 
     private void Validate(String userEmail, String userPassword){

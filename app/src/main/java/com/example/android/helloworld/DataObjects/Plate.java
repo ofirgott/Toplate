@@ -30,8 +30,9 @@ final public class Plate implements Serializable {
     private String OwnerId;
     private String PlateName;
     private String RestName;
+    private Integer Rating;
     private List<Review> Reviews;
-    private Map<String, Integer> Tags;
+    private Map<String, Integer> Tags;;
 
     public Plate() {
         // Default constructor required for calls to DataSnapshot.getValue
@@ -50,6 +51,7 @@ final public class Plate implements Serializable {
         this.OwnerId = review.getOwnerId();
         this.PlateName = Name;
         this.RestName = RestName;
+        this.Rating = review.getRating();
         this.Tags = new HashMap<>();
         this.Reviews = new ArrayList<>();
 
@@ -68,6 +70,7 @@ final public class Plate implements Serializable {
         result.put("OwnerId", OwnerId);
         result.put("PlateName", PlateName);
         result.put("RestName", RestName);
+        result.put("Rating", Rating);
         result.put("Tags", Tags);
         result.put("Reviews", Reviews);
         return result;
@@ -79,6 +82,14 @@ final public class Plate implements Serializable {
 
     public void setOwnerId(String ownerId) {
         this.OwnerId = ownerId;
+    }
+
+    public Integer getRating() {
+        return Rating;
+    }
+
+    public void setRating(Integer rating) {
+        Rating = rating;
     }
 
     public String getPlateName() {
@@ -147,35 +158,54 @@ final public class Plate implements Serializable {
         }
 
         this.Reviews.add(review);
+        this.Rating = calcNewRating();
+    }
+
+    public Integer calcNewRating() {
+        Integer currentRating = 0;
+
+        for (Review review : this.Reviews)
+        {
+            currentRating += review.getRating();
+        }
+
+        currentRating = currentRating / this.Reviews.size();
+        return currentRating;
     }
 
     /********STATIC FUNCTIONS*******/
 
-    public static List<String> getAllRestPlates(final String restName) { //TODO
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Restaurants");
+    public static List<String> getAllRestPlates(final String restName) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Restaurants").child(restName);
         final List<String> plateNames = new ArrayList<>();
 
-        ref.orderByChild("RestName").equalTo(restName).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    if (dataSnapshot.getChildrenCount() > 1) {
-                        System.out.println("more than one restaurant with the same name is illegal");
-                        return;
-                    }
+        ref.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.hasChildren())
+                {
+                    Iterator<MutableData> it = mutableData.getChildren().iterator();
 
-                    DataSnapshot restDs = dataSnapshot.child(restName);
-                    for (DataSnapshot ds : restDs.getChildren()) {
-                        plateNames.add(ds.child("PlateName").getValue(String.class));
+                    while (it.hasNext())
+                    {
+                        MutableData currData = it.next();
+                        plateNames.add(currData.getKey());
                     }
                 }
+                return Transaction.success(mutableData);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println(databaseError.getMessage());
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
             }
         });
+
+        try {
+            Thread.sleep(3000);
+        } catch (java.lang.InterruptedException e) {}
 
         return plateNames;
     }
@@ -205,13 +235,11 @@ final public class Plate implements Serializable {
             @Override
             public void onComplete(DatabaseError databaseError, boolean b,
                                    DataSnapshot dataSnapshot) {
-
-                System.out.println("transaction completed");
-
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
             }
         });
-
-
     }
 
 }
