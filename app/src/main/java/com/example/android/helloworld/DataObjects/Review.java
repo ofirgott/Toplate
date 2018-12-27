@@ -1,11 +1,13 @@
 package com.example.android.helloworld.DataObjects;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 
 public class Review implements Serializable {
 
-    static Integer NextId = 0;
-    private Integer Id;
+    static private final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
+
     private String OwnerId;
     private Integer Rating;
     private String VerbalComment;
@@ -16,7 +18,6 @@ public class Review implements Serializable {
 
     public Review(String ownerId, Integer rating, String verbalComment)
     {
-        this.Id = ++NextId;
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = verbalComment;
@@ -24,18 +25,9 @@ public class Review implements Serializable {
 
     public Review(String ownerId, Integer rating)
     {
-        this.Id = ++NextId;
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = "";
-    }
-
-    public Integer getId() {
-        return Id;
-    }
-
-    public void setId(Integer id) {
-        Id = id;
     }
 
     public String getOwnerId() {
