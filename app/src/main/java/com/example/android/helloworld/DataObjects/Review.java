@@ -6,8 +6,6 @@ import java.io.Serializable;
 
 public class Review implements Serializable {
 
-    static private final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
-
     private String OwnerId;
     private Integer Rating;
     private String VerbalComment;
