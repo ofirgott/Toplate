@@ -35,15 +35,15 @@
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_below="@id/textView_reviewer_name"
-        android:layout_toRightOf="@id/ratingBar5"
-        android:layout_marginRight="15dp"
-        app:srcCompat="@android:drawable/presence_busy" />
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        app:srcCompat="@drawable/ic_report_black_24dp" />
 
     <TextView
         android:id="@+id/textView_review_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/reportReview"
+        android:layout_below="@id/ratingBar5"
         android:layout_alignStart="@+id/textView_reviewer_name"
         android:text="review content"
         android:textSize="18sp"
