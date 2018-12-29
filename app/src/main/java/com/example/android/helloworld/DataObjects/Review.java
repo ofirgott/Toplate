@@ -7,21 +7,21 @@ import java.io.Serializable;
 public class Review implements Serializable {
 
     private String OwnerId;
-    private Integer Rating;
+    private Float Rating;
     private String VerbalComment;
 
     public Review() {
         // Default constructor required for calls to DataSnapshot.getValue
     }
 
-    public Review(String ownerId, Integer rating, String verbalComment)
+    public Review(String ownerId, Float rating, String verbalComment)
     {
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = verbalComment;
     }
 
-    public Review(String ownerId, Integer rating)
+    public Review(String ownerId, Float rating)
     {
         this.OwnerId = ownerId;
         this.Rating = rating;
@@ -36,11 +36,11 @@ public class Review implements Serializable {
         OwnerId = ownerId;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return Rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         Rating = rating;
     }
 

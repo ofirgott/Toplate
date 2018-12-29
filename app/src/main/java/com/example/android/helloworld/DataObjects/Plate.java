@@ -10,6 +10,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import static java.lang.Math.min;
 final public class Plate implements Serializable, Comparable<Plate>  {
 
     static private final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
+    static private final FirebaseStorage storageBase = FirebaseStorage.getInstance();
 
     static public String RESTAURANTS = "Restaurants";
     static public String TAGS = "Tags";
@@ -38,7 +40,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     private String OwnerId;
     private String PlateName;
     private String RestName;
-    private Integer Rating;
+    private Float Rating;
     private List<Review> Reviews;
     private Map<String, Integer> Tags;
     private List<String> Urls;
@@ -90,11 +92,11 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         this.OwnerId = ownerId;
     }
 
-    public Integer getRating() {
+    public Float getRating() {
         return Rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Float rating) {
         Rating = rating;
     }
 
@@ -190,8 +192,8 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         }
     }
 
-    public Integer calcNewRating() {
-        Integer currentRating = 0;
+    public Float calcNewRating() {
+        Float currentRating = 0.f;
 
         for (Review review : this.Reviews) {
             currentRating += review.getRating();

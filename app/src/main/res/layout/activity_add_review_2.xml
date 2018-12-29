@@ -18,7 +18,7 @@
         android:textSize="20sp" />
 
     <Button
-        android:id="@+id/addReviewContinue"
+        android:id="@+id/addReviewSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -58,7 +58,7 @@
         android:id="@+id/reviewTextBox"
         android:layout_width="match_parent"
         android:layout_height="116dp"
-        android:layout_above="@+id/addReviewContinue"
+        android:layout_above="@+id/addReviewSend"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_marginStart="0dp"
@@ -74,7 +74,7 @@
         android:id="@+id/addPhotoButton"
         android:layout_width="38dp"
         android:layout_height="38dp"
-        android:layout_alignBottom="@+id/addReviewContinue"
+        android:layout_alignBottom="@+id/addReviewSend"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="140dp"
 

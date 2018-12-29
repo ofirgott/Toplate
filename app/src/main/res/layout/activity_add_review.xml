@@ -16,7 +16,7 @@
         android:textSize="27sp" />
 
     <Button
-        android:id="@+id/addReviewContinue"
+        android:id="@+id/addReviewSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
