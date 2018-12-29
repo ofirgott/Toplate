@@ -1,16 +1,23 @@
 package com.example.android.helloworld;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 
-public class ResultsActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+
+public class ResultsActivity extends Fragment {
 
 
     final String[] plates = new String[] { "Sorbet","Red Bomb","cake", "Mamas Chocolate-Fudge Donuts with red frosting and gummy bears","mana","mana","mana","mana","mana","mana","mana","mana","mana","mana"};
@@ -18,18 +25,57 @@ public class ResultsActivity extends AppCompatActivity {
     final String[] restaurants_addresses = new String[] { "Tel Aviv","Petah Tikva","Modi'in", "aaaaaaaaa saaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaa aaaaaaa","address","address","address","address","address","address","address","address","address","address"};
     final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_results,container,false);
+        return root;
+    }
 
-        ListView reviewsList = (ListView)findViewById(R.id.resultsList);
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListView resultsList = (ListView)getView().findViewById(R.id.resultsList);
+
+        resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //send a request to the server and get information
+                final String plateName="Bok Choy Beef Noodles";
+                final String restaurantName = "Vong";
+                final String restaurantAddress = "27 Rothschild Blvd, Tel Aviv";
+                final float numStars = (float)4.5;
+                final String[] reviewersNames  = new String[] { "Oz", "Shahar", "Moni", "Ofir", "Chen", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
+                final String[] reviewsContent = new String[] { "SO FUCKING DELICIOUS", "This dish is shit, lots of Kusbara", "It's ok, but I wouldn't try it again. But if it's a cold day and you want something that warms you up so you wouldn't feel lonely, then it's ok. Overall it's ok, like really ok", "Yummm", "I wish I could marry Bok Choy <3", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
+                final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
+                final String[] plateTags = {"Bok Choy", "Beef", "Noodles", "Soy", "Asian", "Spicy", "Kosher"};
+
+                DishActivity plateFragment = new DishActivity();
+                Bundle arguments = new Bundle();
+                arguments.putString("plateName",plateName);
+                arguments.putString("restaurantName",restaurantName);
+                arguments.putString("restaurantAddress",restaurantAddress);
+                arguments.putFloat("numStars",numStars);
+                arguments.putStringArray("reviewersNames",reviewersNames);
+                arguments.putStringArray("reviewsContent",reviewsContent);
+                arguments.putFloatArray("ratings",ratings);
+                arguments.putStringArray("plateTags",plateTags);
+
+                plateFragment.setArguments(arguments);
+
+
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container,plateFragment);
+                ft.addToBackStack("dish");
+                ft.commit();
+            }
+        });
 
         resultsAdapter resAdapter = new resultsAdapter();
-
-        reviewsList.setAdapter(resAdapter);
-
+        resultsList.setAdapter(resAdapter);
     }
+
 
     class resultsAdapter extends BaseAdapter{
 
