@@ -286,19 +286,20 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     }
 
 
-    public SortedSet<Map.Entry<String,Integer>> orderedTags()
+    public List<Map.Entry<String,Integer>> orderedTags()
     {
-        SortedSet<Map.Entry<String,Integer>> sortedEntries = new TreeSet<>(
-                new Comparator<Map.Entry<String,Integer>>() {
-                    @Override public int compare(Map.Entry<String,Integer> e1, Map.Entry<String,Integer> e2) {
-                        int res = e2.getValue().compareTo(e1.getValue());
-                        return res;
-                    }
-                }
-        );
+        List<Map.Entry<String,Integer>> tagsList = new ArrayList<>();
+        tagsList.addAll(this.Tags.entrySet());
 
-        sortedEntries.addAll(this.Tags.entrySet());
-        return sortedEntries;
+        Collections.sort(tagsList, new Comparator<Map.Entry<String,Integer>>() {
+            @Override public int compare(Map.Entry<String,Integer> e1, Map.Entry<String,Integer> e2) {
+                int res = e2.getValue().compareTo(e1.getValue());
+                return res;
+            }
+        });
+
+        System.out.println(tagsList);
+        return tagsList;
     }
 
     /********STATIC FUNCTIONS*******/

@@ -14,10 +14,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
 import com.example.android.helloworld.DataObjects.Plate;
+import com.example.android.helloworld.DataObjects.Review;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 
 
 public class ResultsActivity extends Fragment {
@@ -56,21 +59,49 @@ public class ResultsActivity extends Fragment {
                 final String restaurantName = "Vong";
                 final String restaurantAddress = "27 Rothschild Blvd, Tel Aviv";
                 final float numStars = (float)4.5;
-                final String[] reviewersNames  = new String[] { "Oz", "Shahar", "Moni", "Ofir", "Chen", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
-                final String[] reviewsContent = new String[] { "SO FUCKING DELICIOUS", "This dish is shit, lots of Kusbara", "It's ok, but I wouldn't try it again. But if it's a cold day and you want something that warms you up so you wouldn't feel lonely, then it's ok. Overall it's ok, like really ok", "Yummm", "I wish I could marry Bok Choy <3", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
-                final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
                 final String[] plateTags = {"Bok Choy", "Beef", "Noodles", "Soy", "Asian", "Spicy", "Kosher"};
+
+                Plate plate = matchingPlates.get(position);
 
                 DishActivity plateFragment = new DishActivity();
                 Bundle arguments = new Bundle();
-                arguments.putString("plateName",plateName);
-                arguments.putString("restaurantName",restaurantName);
+                arguments.putString("plateName",plate.getPlateName());
+                arguments.putString("restaurantName",plate.getRestName());
                 arguments.putString("restaurantAddress",restaurantAddress);
-                arguments.putFloat("numStars",numStars);
+                arguments.putFloat("numStars",plate.getRating());
+
+                List<Review> reviews = plate.getReviews();
+                String[] reviewersNames  = new String[reviews.size()];
+                String[] reviewsContent = new String[reviews.size()];
+                float[] ratings = new float[reviews.size()];
+
+                for(int i=0; i<reviews.size();i++){
+                    if(reviews.get(i).Valid()) {
+                        reviewersNames[i] = reviews.get(i).getOwnerId();
+                        reviewsContent[i] = reviews.get(i).getVerbalComment();
+                        ratings[i] = reviews.get(i).getRating();
+                    }
+                }
                 arguments.putStringArray("reviewersNames",reviewersNames);
                 arguments.putStringArray("reviewsContent",reviewsContent);
                 arguments.putFloatArray("ratings",ratings);
-                arguments.putStringArray("plateTags",plateTags);
+
+
+                List<Map.Entry<String,Integer>> tagsMap= plate.orderedTags();
+                System.out.println("size of sorted set : "+tagsMap.size());
+                System.out.println("size of map: "+plate.getTags().size());
+
+                int numOfTags = Math.min(7,tagsMap.size());
+                int counter = 0;
+                String[] shownTags = new String[numOfTags];
+                for (Map.Entry<String, Integer> entry : tagsMap)
+                {
+                    shownTags[counter] = entry.getKey();
+                    counter++;
+                    if (counter>=numOfTags)
+                        break;
+                }
+                arguments.putStringArray("plateTags",shownTags);
 
                 plateFragment.setArguments(arguments);
 
