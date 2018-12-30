@@ -52,6 +52,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+        //Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Cilantro", "Spicy"), Arrays.asList("url1"), new Review("owner1", (float) 4, "Good!"));
+        //Plate.addToDB("Meat Hummos", "Caspi", Arrays.asList("Hummos", "Meat", "Tomato"), Arrays.asList("url2"), new Review("owner1", (float) 3));
+        //Plate.addToDB("Malazit", "Jiraff", Arrays.asList("Asian", "Spicy", "Cream"), Arrays.asList("url3"), new Review("owner2", (float) 3, "nice, expected more"));
+        //Plate.addToDB("Afganit", "Jiraff", Arrays.asList("Asian", "Cilantro", "Bacon"), Arrays.asList("url4"), new Review("owner2", (float) 4, "like!"));
+        //Plate.addToDB("Eggplant Shakshuka", "Caspi", Arrays.asList("Tomato", "Cilantro", "Eggs"), Arrays.asList("url5"), new Review("owner3", (float) 2.5, "too much sauce"));
+        //Plate.addToDB("Pizza Fresca", "Joya", Arrays.asList("Tomato", "Cream", "Mozarella"), Arrays.asList("url6"), new Review("owner3", (float) 1, "Worst plate ever"));
+        //Plate.addToDB("Napolitana", "Joya", Arrays.asList("Tomato", "Mozarella"), Arrays.asList("url7"), new Review("owner1", (float) 3.5, "nice pizza and nothing more"));
+
+
+            //Plate.reportPlate("Pizza Fresca", "Joya");
+            //try {
+                //Thread.sleep(3000);
+            //} catch (java.lang.InterruptedException e) {}
+
+
+
+        //List<Plate> matchingPlates = Plate.getAllMatchingPlates(Arrays.asList("Asian", "Cilantro"), 7);
+        //System.out.println(matchingPlates.size());
+        //if (!matchingPlates.isEmpty())
+        //{
+            //for (Plate plate : matchingPlates)
+            //{
+                //System.out.println(plate.getPlateName());
+            //}
+
+
+            //matchingPlates.get(0).reportReview(0);
+        //}
     }
 
     private void Validate(String userEmail, String userPassword){
