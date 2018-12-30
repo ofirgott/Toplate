@@ -1,5 +1,6 @@
 package com.example.android.helloworld.DataObjects;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -263,11 +265,14 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                     if (plate != null)
                     {
                         Review rev = currPlate.Reviews.get(reviewIndex);
-                        rev.setReportsCounter(rev.getReportsCounter() + 1);
-                        mutableData.child(currPlate.PlateName).child("Reviews").child(reviewIndex.toString()).setValue(rev);
-                        for (String tag: currPlate.Tags.keySet())
+                        if (rev.Valid())
                         {
-                            dataBase.getReference(TAGS).child(tag).child(currPlate.PlateKeyInTags()).child("Reviews").child(reviewIndex.toString()).setValue(rev);
+                            rev.setReportsCounter(rev.getReportsCounter() + 1);
+                            mutableData.child(currPlate.PlateName).child("Reviews").child(reviewIndex.toString()).setValue(rev);
+                            for (String tag: currPlate.Tags.keySet())
+                            {
+                                dataBase.getReference(TAGS).child(tag).child(currPlate.PlateKeyInTags()).child("Reviews").child(reviewIndex.toString()).setValue(rev);
+                            }
                         }
                     }
 
@@ -298,7 +303,6 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             }
         });
 
-        System.out.println(tagsList);
         return tagsList;
     }
 
@@ -497,4 +501,64 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             }
         });
     }
+
+    static public Plate getRandomPlate()
+    {
+        DatabaseReference ref = dataBase.getReference(RESTAURANTS);
+        final List<Plate> randomPlate = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Random r = new Random();
+                Integer restRand = r.nextInt((int) dataSnapshot.getChildrenCount());
+                Integer counter = 0;
+
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                {
+                    counter++;
+                    if (counter == restRand)
+                    {
+                        Integer plateRand = r.nextInt((int) child.getChildrenCount());
+                        counter = 0;
+                        for (DataSnapshot newChild : child.getChildren())
+                        {
+                            counter++;
+                            if (counter == plateRand)
+                            {
+                                Plate plate = newChild.getValue(Plate.class);
+                                randomPlate.add(plate);
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+
+        try {
+            Thread.sleep(3000);
+        } catch (java.lang.InterruptedException e) {}
+
+        if (!randomPlate.isEmpty())
+        {
+            return randomPlate.get(0);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+
+
 }
