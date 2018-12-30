@@ -10,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class AddReviewActivity extends Fragment {
@@ -47,7 +45,7 @@ public class AddReviewActivity extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button continueButton = (Button) getView().findViewById(R.id.addReviewContinue);
+        Button continueButton = (Button) getView().findViewById(R.id.addReviewSend);
 
         continueButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -56,7 +54,7 @@ public class AddReviewActivity extends Fragment {
                 AddReviewActivity2 addReview2Fragment = new AddReviewActivity2();
 
                 Bundle arguments = new Bundle();
-                arguments.putString("restaurantName","vong");
+                arguments.putString("restaurantName","Joya");
                 addReview2Fragment.setArguments(arguments);
 
 
