@@ -13,8 +13,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
+import com.example.android.helloworld.DataObjects.Plate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class ResultsActivity extends Fragment {
@@ -24,6 +27,7 @@ public class ResultsActivity extends Fragment {
     final String[] restaurants = new String[] { "res1","res2","res3", "The Original Pancakes House aaaaaa aaaaaaa aaaaaaaaaa ","res","res","res","res","res","res","res","res","res","res"};
     final String[] restaurants_addresses = new String[] { "Tel Aviv","Petah Tikva","Modi'in", "aaaaaaaaa saaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaa aaaaaaa","address","address","address","address","address","address","address","address","address","address"};
     final float[] ratings = new float[] { 5, 1, 3, (float)3.5, (float)2.8,1,1,1,1,1,1,1,1};
+    List<Plate> matchingPlates=null;
 
     @Nullable
     @Override
@@ -37,6 +41,12 @@ public class ResultsActivity extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ListView resultsList = (ListView)getView().findViewById(R.id.resultsList);
+
+
+        String[] tagsChosen = {"Asian","Cilantro"}; //TODO get from client
+        int userPoints = 10;
+        matchingPlates = Plate.getAllMatchingPlates(Arrays.asList(tagsChosen), userPoints);
+
 
         resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -81,7 +91,7 @@ public class ResultsActivity extends Fragment {
 
         @Override
         public int getCount() {
-            return plates.length;
+            return matchingPlates.size();
         }
 
         @Override
@@ -98,17 +108,22 @@ public class ResultsActivity extends Fragment {
         public View getView(int position, View view, ViewGroup parent) {
             view =  getLayoutInflater().inflate(R.layout.result_item,null);
 
+
             TextView textview_plate = (TextView)view.findViewById(R.id.textView_plate);
             TextView textview_restaurant = (TextView)view.findViewById(R.id.textView_restaurant);
-            TextView textview_address = (TextView)view.findViewById(R.id.textView_address);
+            //TextView textview_address = (TextView)view.findViewById(R.id.textView_address);
             RatingBar ratingBar = (RatingBar)view.findViewById(R.id.ratingBar4);
 
-
+            textview_plate.setText(matchingPlates.get(position).getPlateName());
+            textview_restaurant.setText(matchingPlates.get(position).getRestName());
+            //textview_address.setText("restaurant address");
+            ratingBar.setRating((float)matchingPlates.get(position).getRating());
+/*
             textview_plate.setText(plates[position]);
             textview_restaurant.setText(restaurants[position]);
             textview_address.setText(restaurants_addresses[position]);
             ratingBar.setRating(ratings[position]);
-
+*/
             return view;
         }
     }
