@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     public static final int RC_SIGN_IN = 9001;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     List<AuthUI.IdpConfig> providers = Arrays.asList(
 
             new AuthUI.IdpConfig.EmailBuilder().setRequireName(true).build(),
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent a = new Intent(MainActivity.this, MyProfile.class);
+                    Intent a = new Intent(MainActivity.this, Search.class);
                     startActivity(a);
                      Toast.makeText(MainActivity.this, "User Signed In", Toast.LENGTH_SHORT).show();
                 } else {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                             RC_SIGN_IN
                     );
                 }
-                Intent intent = new Intent(MainActivity.this, SearchFragment.class);
+                Intent intent = new Intent(MainActivity.this, Search.class);
                 startActivity(intent);
             }
         };
@@ -66,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==RC_SIGN_IN) {
             if(resultCode == RESULT_OK) {
+
                 //user logged in
                 Log.d("AUTH","Current user e-Mail: " + mFirebaseAuth.getCurrentUser().getEmail());
                 Log.d("AUTH","Current user Display Name: " + mFirebaseAuth.getCurrentUser().getDisplayName());
-                Intent intent = new Intent(this, SearchFragment.class);
+                Intent intent = new Intent(this, Search.class);
                 startActivity(intent);
             }
         }
@@ -87,5 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
 
     }
+
+
 }
 

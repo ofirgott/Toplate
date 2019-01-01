@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 
 import com.allyants.chipview.ChipView;
 import com.allyants.chipview.SimpleChipAdapter;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,15 +157,40 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         switch(item.getItemId()){
             case R.id.nav_add_plate:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AddReviewActivity()).addToBackStack("addReview").commit();
-        }
-        switch(item.getItemId()){
+                break;
             case R.id.nav_gain_points:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new GameActivity()).addToBackStack("game").commit();
-        }
-        switch(item.getItemId()){
+                break;
             case R.id.nav_contact:
-                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment(),"contact").addToBackStack("contact").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment(),"contact").addToBackStack("contact").commit();
+                break;
+            case R.id.nav_sign_out:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now signed out
+                                Toast.makeText(Search.this, "User Signed Out", Toast.LENGTH_SHORT).show();
+                                Log.d("AUTH", "user signed out");
+                                finish();
+                            }
+                        });
+                break;
+            case R.id.nav_delete_account:
+                AuthUI.getInstance()
+                        .delete(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now deleted
+                                Toast.makeText(Search.this, "User successfully deleted", Toast.LENGTH_SHORT).show();
+                                Log.d("AUTH", "User successfully deleted");
+                                finish();
+                            }
+                        });
+                break;
         }
+
+
 
         drawer.closeDrawer(GravityCompat.START);
         return true;

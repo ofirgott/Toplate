@@ -24,6 +24,9 @@
         <activity android:name=".Search"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".reportReview"
+            android:theme="@style/AppTheme.PopUpTheme"></activity>
+
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MyProfile" />
         <activity
