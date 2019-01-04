@@ -54,6 +54,18 @@
         android:layout_marginLeft="62dp"
         android:layout_marginTop="117dp" />
 
+    <com.hootsuite.nachos.NachoTextView
+        android:id="@+id/nacho_text_view_addreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/reviewTextBox"
+        android:hint="What are you craving?"
+        android:background="@drawable/back"
+        android:gravity="top"
+        android:minLines="4"
+        android:maxLines="4"
+        android:layout_marginBottom="14dp"/>
+
     <EditText
         android:id="@+id/reviewTextBox"
         android:layout_width="match_parent"

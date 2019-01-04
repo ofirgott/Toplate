@@ -40,6 +40,10 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     static public String RESTAURANTS = "Restaurants";
     static public String TAGS = "Tags";
 
+    static public String[] AppTags = new String[]{"Tortilla Chips", "Melted Cheese", "Salsa", "Guacamole", "Mexico", "Jalapeno","Asian","Cilantro","Pasta"};
+    static public String[] AppRestaurants = new String[] {"Arepas","American Diner","American Burger","Azura","Amora Mio", "Alupa", "Vong", "Viva Mia", "Velvet Italiano","Mezcal","Joya","Jiraff"};
+    static public String[] AppAddresses = new String[] {"Rothschild 1, Tel Aviv","Rothschild 2, Tel Aviv","Rothschild 3, Tel Aviv","Rothschild 4, Tel Aviv","Rothschild 5, Tel Aviv","Rothschild 6, Tel Aviv","Rothschild 7, Tel Aviv","Rothschild 8, Tel Aviv","Rothschild 9, Tel Aviv","Habait Shel Oz","Habarzel 1","Habarzel 2"};
+
     static public Integer USER_LEVEL_1 = 5;
     static public Integer USER_LEVEL_2 = 15;
     static public Integer USER_LEVEL_3 = 30;
@@ -79,6 +83,15 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         }
 
         this.Reviews.add(review);
+    }
+
+    public static String getAddress(String restName){
+        for (int i = 0; i < AppRestaurants.length; i++){
+            if (AppRestaurants[i].equals(restName)){
+                return AppAddresses[i];
+            }
+        }
+        return null;
     }
 
     public Map<String, Object> toMap() {

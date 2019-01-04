@@ -54,7 +54,7 @@ public class AddReviewActivity extends Fragment {
                 AddReviewActivity2 addReview2Fragment = new AddReviewActivity2();
 
                 Bundle arguments = new Bundle();
-                arguments.putString("restaurantName","Joya");
+                arguments.putString("restaurantName",restaurantsComplete.getText().toString());
                 addReview2Fragment.setArguments(arguments);
 
 
