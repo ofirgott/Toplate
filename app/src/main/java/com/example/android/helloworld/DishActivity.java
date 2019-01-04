@@ -3,6 +3,8 @@ package com.example.android.helloworld;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -19,9 +21,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
+import java.util.ArrayList;
 
 
-    public class DishActivity extends Fragment {
+public class DishActivity extends Fragment {
         private TextView _plateName;
         private TextView _restaurantName;
         private TextView _restaurantAddress;
@@ -30,7 +33,7 @@ import android.view.LayoutInflater;
         private String[] _reviewers_names;
         private String[] _reviewsContent;
         private float[] _ratings;
-
+    private ArrayList<String> mImageUrls = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -61,15 +64,47 @@ import android.view.LayoutInflater;
         }
         _plateTags.setText(tagsString);
 
+
         return root;
     }
 
+        private void initImageBitmaps(){
+
+            mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
+
+            mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
+
+            mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
+
+            mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
+
+            mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
+
+            mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
+
+            mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
+
+            mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
+
+            mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
+
+            initRecyclerView();
+        }
+
+        private void initRecyclerView(){
+            RecyclerView recyclerView = getActivity().findViewById(R.id.recyclerView2);
+            RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), mImageUrls);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ListView reviewsList = (ListView)getView().findViewById(R.id.reviewsList);
         DishActivity.ReviewsAdapter revAdapter = new DishActivity.ReviewsAdapter();
         reviewsList.setAdapter(revAdapter);
+        initImageBitmaps();
     }
 
     class ReviewsAdapter extends BaseAdapter {
