@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.hootsuite.nachos.NachoTextView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
+import java.util.Random;
 
 
 public class GameActivity extends Fragment {
@@ -27,18 +30,38 @@ public class GameActivity extends Fragment {
     private WebView slideHolder;
     private TextView _plateName;
     NachoTextView nachoTextView;
+    Button submitButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root =inflater.inflate(R.layout.activity_game,container,false);
         slideHolder = (WebView) root.findViewById(R.id.gameImage);
-        slideHolder.loadUrl(imgPath);
+        final Plate randomPlate;
+
+
+        randomPlate = Plate.getRandomPlate();
+        Random r = new Random();
+        Integer restRand = r.nextInt((int)randomPlate.getUrls().size());
+        slideHolder.loadUrl(randomPlate.getUrls().get(restRand));
         _plateName = (TextView) root.findViewById(R.id.gamePlateName);
-        _plateName.setText("Bok Choy Beef Noodles");
+        _plateName.setText(randomPlate.getPlateName());
+        System.out.println(randomPlate.getPlateName());
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_game);
         nachoTextView.setAdapter(tagsAdapter);
+        submitButton = (Button)root.findViewById(R.id.submitButton);
+        submitButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //List<String> tags = nachoTextView.getChipValues();
+                //randomPlate.insertNewTags(tags);
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new GameActivity());
+                ft.addToBackStack("game");
+                ft.commit();
+            }
+        });
         return root;
     }
 }

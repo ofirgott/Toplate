@@ -587,7 +587,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         });
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(7000);
         } catch (java.lang.InterruptedException e) {}
 
         if (!randomPlate.isEmpty())
