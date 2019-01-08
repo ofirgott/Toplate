@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.helloworld.DataObjects.User;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +34,9 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             finish();
         }
+        else{
+            MainActivity.setCurrentUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance());
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
@@ -38,6 +44,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -52,7 +59,17 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
 
         }
 
-       // User info = User.getCurrentUserPersonalInfo();
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.menuHelloName);
+        TextView navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
+        TextView navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
+
+        //navUsername.setText(MainActivity.currentUser.getName());
+        navUsername.setText("Hello Ofir!");
+        navPoints.setText("You have 0 Points!");
+        navLevel.setText("You can see up to 3 results!");
+
+        // User info = User.getCurrentUserPersonalInfo();
     }
 
 

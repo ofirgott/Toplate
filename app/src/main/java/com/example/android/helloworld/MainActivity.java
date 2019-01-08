@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
                 //mFirebaseAuth.signOut();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    setCurrentUser(user.getUid());
+                    setCurrentUser(user.getUid(), mFirebaseAuth);
                     Log.d("AUTH***", "User is " + user.getDisplayName() + ", user id = " + user.getUid());
                     Intent a = new Intent(MainActivity.this, Search.class);
-                    setCurrentUser(user.getUid());
+                    setCurrentUser(user.getUid(), mFirebaseAuth);
                     //Toast.makeText(MainActivity.this, "User Signed In. Hello " + user.getDisplayName() + ". You have " + currentUser.getScore()  + " points", Toast.LENGTH_SHORT).show();
                     startActivity(a);
 
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void setCurrentUser(final String uid) {
+    public static void setCurrentUser(final String uid, final FirebaseAuth mFirebaseAuth) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                setCurrentUser(mFirebaseAuth.getCurrentUser().getUid());
+                setCurrentUser(mFirebaseAuth.getCurrentUser().getUid(), mFirebaseAuth);
 
                 //user logged in
 

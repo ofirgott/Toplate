@@ -132,9 +132,9 @@ public class User implements Serializable {
 
                 user.name = dataSnapshot.getValue(String.class);
                 user.score = dataSnapshot.getValue(int.class);
-                user.reviews = dataSnapshot.getValue(List.class);
+                //user.reviews = dataSnapshot.getValue(List.class);
                 user.markedAsSpammer = dataSnapshot.getValue(int.class);
-                user.platesCreated = dataSnapshot.getValue(List.class);
+                //user.platesCreated = dataSnapshot.getValue(List.class);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

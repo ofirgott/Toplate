@@ -70,8 +70,11 @@ public class DishActivity extends Fragment {
 
         private void initImageBitmaps(){
 
-            mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
+            mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+            mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+            mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
 
+/*
             mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
 
             mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
@@ -87,7 +90,7 @@ public class DishActivity extends Fragment {
             mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
 
             mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-
+*/
             initRecyclerView();
         }
 
@@ -96,7 +99,6 @@ public class DishActivity extends Fragment {
             RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), mImageUrls);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
-
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
