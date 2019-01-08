@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.android.helloworld.DataObjects.Plate;
 import com.example.android.helloworld.DataObjects.Review;
+import com.google.firebase.auth.FirebaseAuth;
 import com.hootsuite.nachos.NachoTextView;
 
 import java.util.ArrayList;
@@ -68,8 +69,8 @@ public class AddReviewActivity2 extends Fragment {
                 Plate.addToDB(platesComplete.getText().toString(),
                                restaurantName.getText().toString(),
                                 tags,
-                               Arrays.asList("fake1"),
-                               new Review("owner1", ratingBar.getRating(), reviewContent.getText().toString()));
+                               Arrays.asList("fakeUrl"),
+                               new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), ratingBar.getRating(), reviewContent.getText().toString()));
 
                 getActivity().onBackPressed();
             }

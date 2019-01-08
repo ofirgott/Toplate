@@ -31,6 +31,9 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             finish();
         }
+        else{
+            Log.i("AUTH_TEST","Current user is :"  + MainActivity.currentUser.getName()+ ". id = " + MainActivity.currentUser.getUid());
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
