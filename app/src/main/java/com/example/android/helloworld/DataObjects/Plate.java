@@ -1,6 +1,8 @@
 package com.example.android.helloworld.DataObjects;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,12 +18,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import static java.lang.Math.min;
 
@@ -33,14 +40,21 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     static public String RESTAURANTS = "Restaurants";
     static public String TAGS = "Tags";
 
+    static public String[] AppTags = new String[]{"Tortilla Chips", "Melted Cheese", "Salsa", "Guacamole", "Mexico", "Jalapeno","Asian","Cilantro","Pasta"};
+    static public String[] AppRestaurants = new String[] {"Arepas","American Diner","American Burger","Azura","Amora Mio", "Alupa", "Vong", "Viva Mia", "Velvet Italiano","Mezcal","Joya","Jiraff"};
+    static public String[] AppAddresses = new String[] {"Rothschild 1, Tel Aviv","Rothschild 2, Tel Aviv","Rothschild 3, Tel Aviv","Rothschild 4, Tel Aviv","Rothschild 5, Tel Aviv","Rothschild 6, Tel Aviv","Rothschild 7, Tel Aviv","Rothschild 8, Tel Aviv","Rothschild 9, Tel Aviv","Habait Shel Oz","Habarzel 1","Habarzel 2"};
+
     static public Integer USER_LEVEL_1 = 5;
     static public Integer USER_LEVEL_2 = 15;
     static public Integer USER_LEVEL_3 = 30;
+
+    static public Integer MAX_ALLOWED_REPORTS = 5;
 
     private String OwnerId;
     private String PlateName;
     private String RestName;
     private Float Rating;
+    private Integer ReportsCounter;
     private List<Review> Reviews;
     private Map<String, Integer> Tags;
     private List<String> Urls;
@@ -54,6 +68,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         this.PlateName = Name;
         this.RestName = RestName;
         this.Rating = review.getRating();
+        this.ReportsCounter = 0;
         this.Tags = new HashMap<>();
         this.Reviews = new ArrayList<>();
         this.Urls = new ArrayList<>();
@@ -70,6 +85,15 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         this.Reviews.add(review);
     }
 
+    public static String getAddress(String restName){
+        for (int i = 0; i < AppRestaurants.length; i++){
+            if (AppRestaurants[i].equals(restName)){
+                return AppAddresses[i];
+            }
+        }
+        return null;
+    }
+
     public Map<String, Object> toMap() {
 
         HashMap<String, Object> result = new HashMap<>();
@@ -81,7 +105,16 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         result.put("Tags", Tags);
         result.put("Reviews", Reviews);
         result.put("Urls", Urls);
+        result.put("ReportsCounter", ReportsCounter);
         return result;
+    }
+
+    public Integer getReportsCounter() {
+        return ReportsCounter;
+    }
+
+    public void setReportsCounter(Integer reportsCounter) {
+        ReportsCounter = reportsCounter;
     }
 
     public String getOwnerId() {
@@ -145,21 +178,22 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         return this.Rating.compareTo(other.Rating);
     }
 
-    public String getPlateKeyInTags()
+    public String PlateKeyInTags()
     {
         return this.RestName + ", " + this.PlateName;
     }
 
-    public void insertToTags() {
+    public void insertToTags()
+    {
         DatabaseReference tagsRef = dataBase.getReference(TAGS);
-        final String thisPlateKey = getPlateKeyInTags();
+        final String thisPlateKey = PlateKeyInTags();
         final Plate thisPlate = this;
 
         for (final String tag : this.Tags.keySet()) {
             tagsRef.child(tag).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    dataBase.getReference(TAGS).child(tag).child(thisPlateKey).setValue(thisPlate);
+                    dataBase.getReference(TAGS).child(tag).child(thisPlateKey).setValue(thisPlate.toMap());
                 }
 
                 @Override
@@ -170,8 +204,31 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         }
     }
 
-    public void updateUrlsTagsAndReviews(List<String> urls, List<String> tags, Review review) {
+    public void removeFromTags()
+    {
+        DatabaseReference tagsRef = dataBase.getReference(TAGS);
+        final Plate thisPlate = this;
+        for (final String tag: this.Tags.keySet())
+        {
+            tagsRef.runTransaction(new Transaction.Handler() {
+                public Transaction.Result doTransaction(MutableData mutableData) {
+                    mutableData.child(tag).child(thisPlate.PlateKeyInTags()).setValue(null);
+                    return Transaction.success(mutableData);
+                }
 
+                @Override
+                public void onComplete(DatabaseError databaseError, boolean b,
+                                       DataSnapshot dataSnapshot) {
+                    if (databaseError != null) {
+                        System.out.println(databaseError.getMessage());
+                    }
+                }
+            });
+        }
+    }
+
+    public void updateTags(List<String> tags)
+    {
         for (String tag : tags) {
             Integer currentTagCount = 1;
 
@@ -182,6 +239,11 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
             this.Tags.put(tag, currentTagCount);
         }
+    }
+
+    public void updateUrlsTagsAndReviews(List<String> urls, List<String> tags, Review review) {
+
+        updateTags(tags);
 
         this.Reviews.add(review);
         this.Rating = calcNewRating();
@@ -201,6 +263,60 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
         currentRating = currentRating / this.Reviews.size();
         return currentRating;
+    }
+
+    public void reportReview(final Integer reviewIndex)
+    {
+        final Plate currPlate = this;
+        if (reviewIndex < this.Reviews.size())
+        {
+            dataBase.getReference(RESTAURANTS).child(currPlate.RestName).runTransaction(new Transaction.Handler() {
+                @NonNull
+                @Override
+                public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+                    Plate plate = mutableData.child(currPlate.PlateName).getValue(Plate.class);
+                    if (plate != null)
+                    {
+                        Review rev = currPlate.Reviews.get(reviewIndex);
+                        if (rev.Valid())
+                        {
+                            rev.setReportsCounter(rev.getReportsCounter() + 1);
+                            mutableData.child(currPlate.PlateName).child("Reviews").child(reviewIndex.toString()).setValue(rev);
+                            for (String tag: currPlate.Tags.keySet())
+                            {
+                                dataBase.getReference(TAGS).child(tag).child(currPlate.PlateKeyInTags()).child("Reviews").child(reviewIndex.toString()).setValue(rev);
+                            }
+                        }
+                    }
+
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+                    if (databaseError != null) {
+                        System.out.println(databaseError.getMessage());
+                    }
+                }
+            });
+
+        }
+    }
+
+
+    public List<Map.Entry<String,Integer>> orderedTags()
+    {
+        List<Map.Entry<String,Integer>> tagsList = new ArrayList<>();
+        tagsList.addAll(this.Tags.entrySet());
+
+        Collections.sort(tagsList, new Comparator<Map.Entry<String,Integer>>() {
+            @Override public int compare(Map.Entry<String,Integer> e1, Map.Entry<String,Integer> e2) {
+                int res = e2.getValue().compareTo(e1.getValue());
+                return res;
+            }
+        });
+
+        return tagsList;
     }
 
     /********STATIC FUNCTIONS*******/
@@ -266,7 +382,6 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             }
         });
     }
-
 
     public static List<Plate> getAllMatchingPlates(final List<String> tags, final Integer userPoints) {
         final List<Plate> matchingPlates = new ArrayList<>();
@@ -360,10 +475,103 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         });
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (java.lang.InterruptedException e) {}
 
         return matchingPlates;
     }
+
+    static public void reportPlate(final String plateName, final String restName)
+    {
+        DatabaseReference restRef = dataBase.getReference().child(RESTAURANTS).child(restName);
+
+        restRef.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Plate plate = mutableData.child(plateName).getValue(Plate.class);
+                if (plate  != null)
+                {
+                    plate.ReportsCounter++;
+                    if (plate.ReportsCounter > MAX_ALLOWED_REPORTS)
+                    {
+                        mutableData.child(plateName).setValue(null);
+                        plate.removeFromTags();
+                    }
+                    else
+                    {
+                        mutableData.child(plateName).child("ReportsCounter").setValue(plate.ReportsCounter);
+                    }
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+    }
+
+    static public Plate getRandomPlate()
+    {
+        DatabaseReference ref = dataBase.getReference(RESTAURANTS);
+        final List<Plate> randomPlate = new ArrayList<>();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Random r = new Random();
+                Integer restRand = r.nextInt((int) dataSnapshot.getChildrenCount());
+                Integer counter = 0;
+
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                {
+                    counter++;
+                    if (counter == restRand)
+                    {
+                        Integer plateRand = r.nextInt((int) child.getChildrenCount());
+                        counter = 0;
+                        for (DataSnapshot newChild : child.getChildren())
+                        {
+                            counter++;
+                            if (counter == plateRand)
+                            {
+                                Plate plate = newChild.getValue(Plate.class);
+                                randomPlate.add(plate);
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+
+        try {
+            Thread.sleep(3000);
+        } catch (java.lang.InterruptedException e) {}
+
+        if (!randomPlate.isEmpty())
+        {
+            return randomPlate.get(0);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+
 
 }
