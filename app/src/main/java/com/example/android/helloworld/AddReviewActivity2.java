@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.android.helloworld.DataObjects.Plate;
 import com.example.android.helloworld.DataObjects.Review;
+import com.hootsuite.nachos.NachoTextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,20 +33,13 @@ public class AddReviewActivity2 extends Fragment {
     EditText reviewContent;
     ImageButton addPhotoButton;
     Button sendButton;
-
+    NachoTextView nachoTextView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_add_review_2, container, false);
 
-        /*plates.add("Bok Choi Beef Noodles");
-        plates.add("Bok Choi Beef Noodles");
-        plates.add("Bok Choi Beef Noodles");
-        plates.add("Bok Choi Beef Noodles");
-        plates.add("Bok Choi Beef Noodles");
-        plates.add("Bok Choi Beef Noodles");
-        plates.add("Bok Choi Beef Noodles"); */
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, plates);
@@ -56,23 +50,24 @@ public class AddReviewActivity2 extends Fragment {
 
         platesComplete = (AutoCompleteTextView) root.findViewById(R.id.PlatesComplete);
         List<String> allRestPlates = Plate.getAllRestPlates(restaurantName.getText().toString());
-        System.out.println(restaurantName.getText().toString());
-        System.out.println(allRestPlates);
         plates.addAll(allRestPlates);
-        System.out.println(plates);
         platesComplete.setAdapter(adapter);
 
         ratingBar = (RatingBar)root.findViewById(R.id.ratingBarAdd);
         reviewContent = (EditText)root.findViewById(R.id.reviewTextBox);
         addPhotoButton = (ImageButton)root.findViewById(R.id.addPhotoButton);
         sendButton = (Button)root.findViewById(R.id.addReviewSend);
+        ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
+        nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_addreview);
+        nachoTextView.setAdapter(tagsAdapter);
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Plate.addToDB("Napolitana",
+                List<String> tags = nachoTextView.getChipValues();
+                Plate.addToDB(platesComplete.getText().toString(),
                                restaurantName.getText().toString(),
-                               Arrays.asList("Mozarella", "Tomato"),
+                                tags,
                                Arrays.asList("fake1"),
                                new Review("owner1", ratingBar.getRating(), reviewContent.getText().toString()));
 

@@ -1,7 +1,5 @@
 package com.example.android.helloworld;
 
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,17 +7,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.allyants.chipview.ChipView;
-import com.allyants.chipview.SimpleChipAdapter;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.example.android.helloworld.DataObjects.User.deleteUserFromDB;
 
 public class Search extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -29,6 +27,10 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            finish();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
@@ -49,62 +51,8 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             ft.commit();
 
         }
-/*
-        if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_contact);
-        }
-*/
-/*
-        Button dishExample = (Button)findViewById(R.id.dishExample);
-        Button addExample = (Button)findViewById(R.id.addExample);
-        Button gameExample = (Button)findViewById(R.id.gameExample);
-        Button resultsExample = (Button)findViewById(R.id.resultsExample);
 
-        dishExample.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Search.this, DishActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        addExample.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Search.this, AddReviewActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        gameExample.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Search.this, GameActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        resultsExample.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(Search.this, ResultsActivity.class);
-                startActivity(intent);
-            }
-        });
-*/
-/*        ChipView cvTag = (ChipView)findViewById(R.id.cvTag);
-        ArrayList<Object> data = new ArrayList<>();
-        data.add("First Item");
-        data.add("Second Item");
-        data.add("Third Item");
-        data.add("Fourth Item");
-        data.add("Fifth Item");
-        data.add("Sixth Item");
-        data.add("Seventh Item");
-        SimpleChipAdapter adapter = new SimpleChipAdapter(data);
-        cvTag.setAdapter(adapter);
-*/
+       // User info = User.getCurrentUserPersonalInfo();
     }
 
 
@@ -153,15 +101,42 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         switch(item.getItemId()){
             case R.id.nav_add_plate:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AddReviewActivity()).addToBackStack("addReview").commit();
-        }
-        switch(item.getItemId()){
+                break;
             case R.id.nav_gain_points:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new GameActivity()).addToBackStack("game").commit();
-        }
-        switch(item.getItemId()){
+                break;
             case R.id.nav_contact:
-                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment(),"contact").addToBackStack("contact").commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ContactUsFragment(),"contact").addToBackStack("contact").commit();
+                break;
+            case R.id.nav_sign_out:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now signed out
+                                Toast.makeText(Search.this, "User Signed Out", Toast.LENGTH_SHORT).show();
+                                MainActivity.currentUser = null;
+                                Log.d("AUTH", "user signed out");
+                                finish();
+                            }
+                        });
+                break;
+            case R.id.nav_delete_account:
+                deleteUserFromDB(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                AuthUI.getInstance()
+                        .delete(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                // user is now deleted
+                                Toast.makeText(Search.this, "User successfully deleted", Toast.LENGTH_SHORT).show();
+                                Log.d("AUTH", "User successfully deleted");
+                                finish();
+                            }
+                        });
+                break;
         }
+
+
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
