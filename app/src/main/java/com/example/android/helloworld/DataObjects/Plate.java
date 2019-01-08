@@ -1,6 +1,5 @@
 package com.example.android.helloworld.DataObjects;
 
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -9,7 +8,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -214,7 +212,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         }
     }
 
-    public void updateTags(List<String> tags)
+    private void updateTags(List<String> tags)
     {
         for (String tag : tags) {
             Integer currentTagCount = 1;
@@ -226,6 +224,33 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
             this.Tags.put(tag, currentTagCount);
         }
+    }
+
+    public void insertNewTags(final List<String> newTags)
+    {
+        DatabaseReference ref = dataBase.getReference(RESTAURANTS).child(this.RestName).child(this.PlateName);
+        final Plate currPlate = this;
+        ref.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Plate plate = mutableData.getValue(Plate.class);
+                if (plate != null)
+                {
+                    plate.updateTags(newTags);
+                    mutableData.child(TAGS).setValue(plate.Tags);
+                    plate.insertToTags();
+                }
+
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
     }
 
     public void updateUrlsTagsAndReviews(List<String> urls, List<String> tags, Review review) {
@@ -289,7 +314,6 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
         }
     }
-
 
     public List<Map.Entry<String,Integer>> orderedTags()
     {
@@ -502,50 +526,55 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         });
     }
 
-    static public Plate getRandomPlate()
+    public static Plate getRandomPlate()
     {
-        DatabaseReference ref = dataBase.getReference(RESTAURANTS);
+        DatabaseReference ref = dataBase.getReference().child(RESTAURANTS);
         final List<Plate> randomPlate = new ArrayList<>();
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Random r = new Random();
-                Integer restRand = r.nextInt((int) dataSnapshot.getChildrenCount());
-                Integer counter = 0;
 
-                for (DataSnapshot child : dataSnapshot.getChildren())
-                {
-                    counter++;
-                    if (counter == restRand)
+        ref.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                if (mutableData.getChildrenCount() > 0) {
+                    Random r = new Random();
+                    Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
+                    Integer counter = 0;
+
+                    for (MutableData child : mutableData.getChildren())
                     {
-                        Integer plateRand = r.nextInt((int) child.getChildrenCount());
-                        counter = 0;
-                        for (DataSnapshot newChild : child.getChildren())
+                        if (counter == restRand)
                         {
-                            counter++;
-                            if (counter == plateRand)
+                            Integer plateRand = r.nextInt((int) child.getChildrenCount());
+                            int plateCounter = 0;
+                            for (MutableData newChild : child.getChildren())
                             {
-                                Plate plate = newChild.getValue(Plate.class);
-                                randomPlate.add(plate);
-                                break;
+                                if (plateCounter == plateRand)
+                                {
+                                    Plate plate = newChild.getValue(Plate.class);
+                                    randomPlate.add(plate);
+                                    break;
+                                }
+
+                                plateCounter ++;
                             }
+
+                            break;
                         }
 
-                        break;
+                        counter++;
                     }
                 }
+
+                return Transaction.success(mutableData);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                if (databaseError != null) {
-                    System.out.println(databaseError.getMessage());
-                }
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+
             }
         });
 
         try {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         } catch (java.lang.InterruptedException e) {}
 
         if (!randomPlate.isEmpty())
@@ -557,7 +586,6 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             return null;
         }
     }
-
 
 
 

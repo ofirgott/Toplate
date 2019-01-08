@@ -60,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
         //Plate.addToDB("Afganit", "Jiraff", Arrays.asList("Asian", "Cilantro", "Bacon"), Arrays.asList("url4"), new Review("owner2", (float) 4, "like!"));
         //Plate.addToDB("Eggplant Shakshuka", "Caspi", Arrays.asList("Tomato", "Cilantro", "Eggs"), Arrays.asList("url5"), new Review("owner3", (float) 2.5, "too much sauce"));
         //Plate.addToDB("Pizza Fresca", "Joya", Arrays.asList("Tomato", "Cream", "Mozarella"), Arrays.asList("url6"), new Review("owner3", (float) 1, "Worst plate ever"));
-        //Plate.addToDB("Napolitana", "Joya", Arrays.asList("Tomato", "Mozarella"), Arrays.asList("url7"), new Review("owner1", (float) 3.5, "nice pizza and nothing more"));
+        //Plate.addToDB("Capreza", "Joya", Arrays.asList("Tomato", "Mozarella"), Arrays.asList("url7"), new Review("owner4", (float) 4, "nice pizza and nothing more"));
 
 
-            //Plate.reportPlate("Pizza Fresca", "Joya");
+            //Plate.reportPlate("Capreza", "Joya");
             //try {
-                //Thread.sleep(3000);
+              //  Thread.sleep(3000);
             //} catch (java.lang.InterruptedException e) {}
 
 
@@ -82,6 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
             //matchingPlates.get(0).reportReview(0);
         //}
+
+        Plate plate = Plate.getRandomPlate();
+        if (plate != null) {
+            System.out.println(plate.getPlateName());
+            plate.insertNewTags(Arrays.asList("Potatos"));
+        }
+        else
+        {
+            System.out.println("NULL");
+        }
+
     }
 
     private void Validate(String userEmail, String userPassword){
