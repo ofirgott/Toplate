@@ -18,6 +18,7 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
 import java.util.ArrayList;
 
@@ -33,8 +34,8 @@ public class AddReviewActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_add_review,container,false);
 
-        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        final SupportPlaceAutocompleteFragment  autocompleteFragment = (SupportPlaceAutocompleteFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(TYPE_RESTAURANT).setCountry("IL")
