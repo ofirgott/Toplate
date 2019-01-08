@@ -4,73 +4,100 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import java.util.ArrayList;
 
+import static com.google.android.gms.location.places.Place.TYPE_RESTAURANT;
+
 
 public class AddReviewActivity extends Fragment {
-    AutoCompleteTextView restaurantsComplete;
-    ArrayList<String> restaurants = new ArrayList<String>();
 
+    private static final String TAG = "AddReviewActivity";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_add_review,container,false);
 
-        //Autocomplete
-        restaurantsComplete = (AutoCompleteTextView) root.findViewById(R.id.RestaurantsComplete);
-        restaurants.add("Arepas");
-        restaurants.add("American Burger");
-        restaurants.add("American Diner");
-        restaurants.add("American Dream");
-        restaurants.add("Azura");
-        restaurants.add("Mezcal");
-        restaurants.add("Vong");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item,restaurants);
-        restaurantsComplete.setAdapter(adapter);
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(TYPE_RESTAURANT).setCountry("IL")
+                .build();
+
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setHint("Enter Restaurant");
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                if (place.getPlaceTypes().contains(TYPE_RESTAURANT)) {
+                    Log.i(TAG, "Place: " + place.getName());
+                    final String restaurant = place.getName().toString();
+                    float restaurant_rating = place.getRating();
+                    String adress = place.getAddress().toString();
+                    String rest_id = place.getId();
+                    autocompleteFragment.setMenuVisibility(false);
+
+                    Button continueButton = (Button) getView().findViewById(R.id.addReviewSend);
+
+                    continueButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            AddReviewActivity2 addReview2Fragment = new AddReviewActivity2();
+
+                            Bundle arguments = new Bundle();
+                            arguments.putString("restaurantName", restaurant);
+                            addReview2Fragment.setArguments(arguments);
+
+
+                            android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.fragment_container, addReview2Fragment);
+                            ft.addToBackStack("addReview2");
+                            ft.commit();
+                        }
+
+                    });
+                }
+
+                 else {
+                    autocompleteFragment.setText("");
+                    Toast.makeText(getActivity(), "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
 
 
         return root;
-     }
+    }
 
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Button continueButton = (Button) getView().findViewById(R.id.addReviewSend);
 
-        continueButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-                AddReviewActivity2 addReview2Fragment = new AddReviewActivity2();
-
-                Bundle arguments = new Bundle();
-                arguments.putString("restaurantName",restaurantsComplete.getText().toString());
-                addReview2Fragment.setArguments(arguments);
-
-
-                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container,addReview2Fragment);
-                ft.addToBackStack("addReview2");
-                ft.commit();
-
-
-
-            }
-        });
 
 
 
 
     }
 
-}

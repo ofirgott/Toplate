@@ -3,37 +3,45 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
-        <entry key="vectorWizard">
+        <entry key="imageWizard">
           <value>
             <PersistentState>
               <option name="children">
                 <map>
-                  <entry key="vectorAssetStep">
+                  <entry key="imageAssetPanel">
                     <value>
                       <PersistentState>
                         <option name="children">
                           <map>
-                            <entry key="clipartAsset">
+                            <entry key="launcher">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="foregroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="74" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_add_a_photo_black_24dp.xml" />
+                                      <entry key="backgroundAssetType" value="COLOR" />
+                                      <entry key="backgroundColor" value="000000" />
+                                      <entry key="foregroundImage" value="C:\Users\ogottesm\Documents\Ofir\res\mipmap-xxxhdpi\ic_launcher1.png" />
+                                      <entry key="previewDensity" value="MEDIUM" />
                                     </map>
                                   </option>
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="color" value="808080" />
-                            <entry key="height" value="36" />
-                            <entry key="outputName" value="ic_add_a_photo_black_36dp" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Chen" />
-                            <entry key="width" value="36" />
                           </map>
                         </option>
                       </PersistentState>
@@ -42,6 +50,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>

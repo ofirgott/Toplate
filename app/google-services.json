@@ -47,14 +47,6 @@
           }
         },
         {
-          "client_id": "780533059397-ulte00ac230rqo6e042e0c499ffckp4q.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.android.toplate",
-            "certificate_hash": "71c240216cdf25a450d284b6766451556c4c078d"
-          }
-        },
-        {
           "client_id": "780533059397-ulajvlarfru8btueg4qfobeesejj9fv8.apps.googleusercontent.com",
           "client_type": 3
         }
