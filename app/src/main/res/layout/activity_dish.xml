@@ -74,7 +74,7 @@
         android:layout_marginTop="10dp" />
 
     <ImageButton
-        android:id="@+id/reportReview"
+        android:id="@+id/reportPlate"
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_below="@id/plateName"

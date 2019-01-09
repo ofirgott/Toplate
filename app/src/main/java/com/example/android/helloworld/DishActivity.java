@@ -69,6 +69,19 @@ public class DishActivity extends AppCompatActivity {
         }
         _plateTags.setText(tagsString);
 
+        ImageButton reportPlate = (ImageButton) findViewById(R.id.reportPlate);
+        reportPlate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ReportPlate.class);
+                intent.putExtra("plateId", "2222");
+                intent.putExtra("restaurantId", "2222");
+                intent.putExtra("userId", "3333");
+                startActivity(intent);
+            }
+        });
+
+
         ListView reviewsList = (ListView) findViewById(R.id.reviewsList);
         DishActivity.ReviewsAdapter revAdapter = new DishActivity.ReviewsAdapter();
         reviewsList.setAdapter(revAdapter);
@@ -101,8 +114,6 @@ public class DishActivity extends AppCompatActivity {
             TextView textview_review_content = (TextView) view.findViewById(R.id.textView_review_content);
             RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar5);
             ImageButton reportReview = (ImageButton) view.findViewById(R.id.reportReview);
-
-
             reportReview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

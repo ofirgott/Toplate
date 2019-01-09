@@ -32,6 +32,9 @@
         <activity
             android:name=".reportReview"
             android:theme="@style/AppTheme.PopUpTheme" />
+        <activity
+            android:name=".ReportPlate"
+            android:theme="@style/AppTheme.PopUpTheme" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MyProfile" />
         <activity android:name=".DishActivity" />
