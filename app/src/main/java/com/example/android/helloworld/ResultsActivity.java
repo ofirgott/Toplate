@@ -59,7 +59,7 @@ public class ResultsActivity extends Fragment {
                 arguments.putString("restaurantName",plate.getRestName());
                 arguments.putString("restaurantAddress",Plate.getAddress(plate.getRestName()));
                 arguments.putFloat("numStars",plate.getRating());
-
+                arguments.putStringArrayList("Urls",new ArrayList<String>(plate.getUrls()));
                 List<Review> reviews = plate.getReviews();
                 String[] reviewersNames  = new String[reviews.size()];
                 String[] reviewsContent = new String[reviews.size()];

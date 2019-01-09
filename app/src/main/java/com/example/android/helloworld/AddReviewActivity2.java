@@ -1,5 +1,7 @@
 package com.example.android.helloworld;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,12 +14,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.android.helloworld.DataObjects.CameraUpload;
 import com.example.android.helloworld.DataObjects.Plate;
 import com.example.android.helloworld.DataObjects.Review;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.StorageReference;
 import com.hootsuite.nachos.NachoTextView;
 
 import java.util.ArrayList;
@@ -35,6 +40,14 @@ public class AddReviewActivity2 extends Fragment {
     ImageButton addPhotoButton;
     Button sendButton;
     NachoTextView nachoTextView;
+
+    CameraUpload camera;
+    private static final int CAMERA_REQ_CODE = 0;
+    private StorageReference storageRef;
+    private boolean took_image;
+    private Uri uri;
+    private String image_path;
+    protected ImageView imgView;
 
     @Nullable
     @Override
@@ -61,23 +74,37 @@ public class AddReviewActivity2 extends Fragment {
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_addreview);
         nachoTextView.setAdapter(tagsAdapter);
+        imgView = (ImageView)root.findViewById(R.id.capture_img);
+        camera = new CameraUpload(this,imgView,addPhotoButton);
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                image_path = camera.uploadImage();
                 List<String> tags = nachoTextView.getChipValues();
                 Plate.addToDB(platesComplete.getText().toString(),
                                restaurantName.getText().toString(),
                                 tags,
-                               Arrays.asList("fakeUrl"),
-                               new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), ratingBar.getRating(), reviewContent.getText().toString()));
+                               Arrays.asList(image_path),
+                               new Review(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), ratingBar.getRating(), reviewContent.getText().toString()));
 
                 getActivity().onBackPressed();
             }
         });
 
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.checkPermissions();
+            }
+        });
 
         return root;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        camera.onActivityResult(requestCode,resultCode,data);
+    }
 }
