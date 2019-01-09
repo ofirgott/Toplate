@@ -38,8 +38,6 @@ public class GameActivity extends Fragment {
         View root =inflater.inflate(R.layout.activity_game,container,false);
         slideHolder = (WebView) root.findViewById(R.id.gameImage);
         final Plate randomPlate;
-
-
         randomPlate = Plate.getRandomPlate();
         Random r = new Random();
         Integer restRand = r.nextInt((int)randomPlate.getUrls().size());
