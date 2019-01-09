@@ -43,7 +43,7 @@ public class AddReviewActivity extends Fragment {
 
         autocompleteFragment.setFilter(typeFilter);
 
-        autocompleteFragment.setHint("Enter Restaurant");
+        autocompleteFragment.setHint("Enter a Restaurant name");
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
