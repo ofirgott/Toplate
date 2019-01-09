@@ -108,6 +108,8 @@ public class User implements Serializable {
 
     public static void deleteUserFromDB(String uid){
         database.getReference().child("Users").child(uid).setValue(null , new DatabaseReference.CompletionListener() {
+
+
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                 if (databaseError != null) {
@@ -130,11 +132,17 @@ public class User implements Serializable {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                user.name = dataSnapshot.getValue(String.class);
-                user.score = dataSnapshot.getValue(int.class);
-                //user.reviews = dataSnapshot.getValue(List.class);
-                user.markedAsSpammer = dataSnapshot.getValue(int.class);
-                //user.platesCreated = dataSnapshot.getValue(List.class);
+//                user.name = dataSnapshot.getValue(String.class);
+//                user.score = dataSnapshot.getValue(int.class);
+//                user.reviews = dataSnapshot.getValue(List.class);
+//                user.markedAsSpammer = dataSnapshot.getValue(int.class);
+//                user.platesCreated = dataSnapshot.getValue(List.class);
+                User tmpUser = dataSnapshot.getValue(User.class);
+                user.name = tmpUser.name;
+                user.score = tmpUser.score;
+                user.reviews = tmpUser.reviews;
+                user.markedAsSpammer = tmpUser.markedAsSpammer;
+                user.platesCreated = tmpUser.platesCreated;
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

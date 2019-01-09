@@ -11,14 +11,18 @@ import com.example.android.helloworld.DataObjects.Plate;
 import com.example.android.helloworld.DataObjects.Review;
 import com.example.android.helloworld.DataObjects.User;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     static private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     public static final int RC_SIGN_IN = 9001;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    public static User currentUser = null;
-
+    public static User currentUser = new User();
+    private boolean knownUser = false;
 
     List<AuthUI.IdpConfig> providers = Arrays.asList(
 
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFirebaseAuth = FirebaseAuth.getInstance();
-        //currentUser = getCurrentUserPersonalInfo();
+
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -56,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 //mFirebaseAuth.signOut();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    setCurrentUser(user.getUid(), mFirebaseAuth);
+                    setCurrentUser(user.getUid());
+                    knownUser = true;
                     Log.d("AUTH***", "User is " + user.getDisplayName() + ", user id = " + user.getUid());
                     Intent a = new Intent(MainActivity.this, Search.class);
-                    setCurrentUser(user.getUid(), mFirebaseAuth);
-                    //Toast.makeText(MainActivity.this, "User Signed In. Hello " + user.getDisplayName() + ". You have " + currentUser.getScore()  + " points", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "User Signed In. Hello " + user.getDisplayName() + ". You have " + currentUser.getScore()  + " points", Toast.LENGTH_LONG).show();
                     startActivity(a);
 
                 } else {
@@ -82,41 +86,43 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    public static void setCurrentUser(final String uid, final FirebaseAuth mFirebaseAuth) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void setCurrentUser(final String uid) {
+        DatabaseReference userRef = database.getReference().child("Users");
+
+        userRef.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                User user = mutableData.child(uid).getValue(User.class);
+                if (user == null) {
+                    user = new User(mFirebaseAuth.getCurrentUser().getUid(),
+                            mFirebaseAuth.getCurrentUser().getDisplayName(),
+                            50,
+                            new ArrayList<Review>(),
+                            new ArrayList<Plate>(),
+                            0,
+                            "");
+                    Log.i("AUTH","Creating new user for " + mFirebaseAuth.getCurrentUser().getDisplayName() + ". id = " + mFirebaseAuth.getCurrentUser().getUid());
+
+                }
+
+                mutableData.child(uid).setValue(user.toMap());
+                //System.out.println("here about to set current user: " + currentUser.getName());
+                currentUser = user;
+                //System.out.println("after setting current user: " + currentUser.getName());
+                return Transaction.success(mutableData);
+            }
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot data: dataSnapshot.getChildren()){
-                    if (data.child(uid).exists()) {
-                        currentUser = data.child(uid).getValue(User.class);
-                    } else {
-                        try {
-                            User newUser = new User(mFirebaseAuth.getCurrentUser().getUid(),
-                                    mFirebaseAuth.getCurrentUser().getDisplayName(),
-                                    50,
-                                    new ArrayList<Review>(),
-                                    new ArrayList<Plate>(),
-                                    0,
-                                    "");
-                            User.addNewUserToDB(newUser);
-                            currentUser = newUser;
-                            Log.i("AUTH", "Creating new user in the db: " + mFirebaseAuth.getCurrentUser().getUid());
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-
         });
+
+        try {
+            Thread.sleep(2000);
+        } catch (java.lang.InterruptedException e) {}
 
     }
 
@@ -126,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                setCurrentUser(mFirebaseAuth.getCurrentUser().getUid(), mFirebaseAuth);
+                setCurrentUser(mFirebaseAuth.getCurrentUser().getUid());
 
                 //user logged in
 
@@ -135,8 +141,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("AUTH", "Current photo url: " + mFirebaseAuth.getCurrentUser().getPhotoUrl());
 
                 Toast.makeText(MainActivity.this, "Welcome" +  mFirebaseAuth.getCurrentUser().getDisplayName()+" . You have points" , Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, Search.class);
-                startActivity(intent);
+                if (!knownUser) {
+                    Intent intent = new Intent(this, Search.class);
+                    startActivity(intent);
+                }
             }
         }
     }
