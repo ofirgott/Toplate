@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -41,6 +43,13 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.menuHelloName);
+        TextView navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
+        TextView navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
+        navUsername.setText("Hello "+MainActivity.currentUser.getName()+"!");
+        navPoints.setText("You have "+MainActivity.currentUser.getScore()+" points!");
+        navLevel.setText("You can see up to 3 results");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);

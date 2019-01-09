@@ -1,5 +1,6 @@
 package com.example.android.helloworld;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ public class GameActivity extends Fragment {
     private TextView _plateName;
     NachoTextView nachoTextView;
     Button submitButton;
+    Button skipButton;
 
     @Nullable
     @Override
@@ -49,11 +51,21 @@ public class GameActivity extends Fragment {
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_game);
         nachoTextView.setAdapter(tagsAdapter);
         submitButton = (Button)root.findViewById(R.id.submitButton);
+        skipButton = (Button)root.findViewById(R.id.skipButton);
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //List<String> tags = nachoTextView.getChipValues();
-                //randomPlate.insertNewTags(tags);
+                List<String> tags = nachoTextView.getChipValues();
+                randomPlate.insertNewTags(tags);
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new GameActivity());
+                ft.addToBackStack("game");
+                ft.commit();
+            }
+        });
+        skipButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, new GameActivity());
                 ft.addToBackStack("game");

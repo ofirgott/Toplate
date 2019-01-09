@@ -34,6 +34,7 @@
             android:theme="@style/AppTheme.PopUpTheme" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MyProfile" />
+        <activity android:name=".DishActivity" />
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"

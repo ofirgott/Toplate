@@ -1,5 +1,6 @@
 package com.example.android.helloworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,6 @@ public class ResultsActivity extends Fragment {
 
                 Plate plate = matchingPlates.get(position);
 
-                DishActivity plateFragment = new DishActivity();
                 Bundle arguments = new Bundle();
                 arguments.putString("plateName",plate.getPlateName());
                 arguments.putString("restaurantName",plate.getRestName());
@@ -93,13 +93,16 @@ public class ResultsActivity extends Fragment {
                 }
                 arguments.putStringArray("plateTags",shownTags);
 
-                plateFragment.setArguments(arguments);
 
 
+/*
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container,plateFragment);
                 ft.addToBackStack("dish");
-                ft.commit();
+                ft.commit();*/
+                Intent intent = new Intent(getActivity(), DishActivity.class);
+                intent.putExtra("arguments",arguments);
+                startActivity(intent);
             }
         });
 
