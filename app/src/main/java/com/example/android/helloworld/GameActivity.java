@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Queue;
 
 
 public class GameActivity extends Fragment {
@@ -22,6 +24,9 @@ public class GameActivity extends Fragment {
     private String imgPath = "https://mt-backend-familycircle-environment-contentbucket-1qlli1qnqqj9z.s3.amazonaws.com/s3fs-public/styles/398x398/public/recipe/550_RU232402.jpg";
     private WebView slideHolder;
     private TextView _plateName;
+    private Queue<String> images;
+    private ArrayList<String> optional_tags;
+    static boolean first = true;
 
     @Nullable
     @Override
