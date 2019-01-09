@@ -15,7 +15,20 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="21dp"
         android:text="resaurant name"
-        android:textSize="20sp" />
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/restaurantGoogleRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="56dp"
+        android:text="Resaurant's Google rating: "
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/addReviewSend"
@@ -37,9 +50,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="58dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginLeft="39dp"
+        android:layout_marginTop="109dp"
         android:completionThreshold="1"
         android:hint="search for the name..." />
 
@@ -50,9 +63,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="62dp"
-        android:layout_marginLeft="62dp"
-        android:layout_marginTop="117dp" />
+        android:layout_marginStart="63dp"
+        android:layout_marginLeft="63dp"
+        android:layout_marginTop="173dp" />
 
     <com.hootsuite.nachos.NachoTextView
         android:id="@+id/nacho_text_view_addreview"

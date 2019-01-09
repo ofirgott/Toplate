@@ -51,6 +51,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     private String OwnerId;
     private String PlateName;
     private String RestName;
+    private String RestAddress;
     private Float Rating;
     private Integer ReportsCounter;
     private List<Review> Reviews;
@@ -61,10 +62,11 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         // Default constructor required for calls to DataSnapshot.getValue
     }
 
-    public Plate(String Name, String RestName, List<String> tags,  List<String> urls, Review review) {
+    public Plate(String Name, String RestName, String RestAddress, List<String> tags,  List<String> urls, Review review) {
         this.OwnerId = review.getOwnerId();
         this.PlateName = Name;
         this.RestName = RestName;
+        this.RestAddress = RestAddress;
         this.Rating = review.getRating();
         this.ReportsCounter = 0;
         this.Tags = new HashMap<>();
@@ -83,14 +85,16 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         this.Reviews.add(review);
     }
 
-    public static String getAddress(String restName){
-        for (int i = 0; i < AppRestaurants.length; i++){
-            if (AppRestaurants[i].equals(restName)){
-                return AppAddresses[i];
-            }
-        }
-        return null;
-    }
+//    public static String getAddress(String restName){
+//        for (int i = 0; i < AppRestaurants.length; i++){
+//            if (AppRestaurants[i].equals(restName)){
+//                return AppAddresses[i];
+//            }
+//        }
+//        return null;
+//    }
+
+
 
     public Map<String, Object> toMap() {
 
@@ -141,6 +145,10 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
     public String getRestName() {
         return RestName;
+    }
+
+    public String getRestAddress() {
+        return RestAddress;
     }
 
     public void setRestName(String restName) {
@@ -378,7 +386,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         return plateNames;
     }
 
-    public static void addToDB(final String PlateName, final String RestName, final List<String> Tags, final List<String> Urls, final Review review) {
+    public static void addToDB(final String PlateName, final String RestName,final String RestAddress, final List<String> Tags, final List<String> Urls, final Review review) {
 
         DatabaseReference restRef = dataBase.getReference().child(RESTAURANTS).child(RestName);
 
@@ -386,7 +394,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Plate plate = mutableData.child(PlateName).getValue(Plate.class);
                 if (plate == null) {
-                    plate = new Plate(PlateName, RestName, Tags, Urls, review);
+                    plate = new Plate(PlateName, RestName, RestAddress, Tags, Urls, review);
                 } else {
                     plate.updateUrlsTagsAndReviews(Urls, Tags, review);
                 }
