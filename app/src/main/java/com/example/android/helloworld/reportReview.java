@@ -21,15 +21,14 @@ public class reportReview extends Activity {
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
         Intent me = getIntent();
-        String reviewIndex = me.getStringExtra("reviewIndex");
-        String plateId = me.getStringExtra("plateId");
-        String userId = me.getStringExtra("userId");
+        final int reviewIndex = me.getIntExtra("reviewIndex",0);
 
         Button sendReportReview = (Button)findViewById(R.id.SendReportReview);
 
         sendReportReview.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                ResultsActivity.curPlate.reportReview(reviewIndex);
                 onBackPressed();
             }
         });

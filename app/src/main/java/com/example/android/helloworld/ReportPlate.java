@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.android.helloworld.DataObjects.Plate;
+
 public class ReportPlate extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,15 +23,23 @@ public class ReportPlate extends Activity {
         getWindow().setLayout((int)(width*.8),(int)(height*.6));
 
         Intent me = getIntent();
-        String plateId = me.getStringExtra("plateId");
-        String restaurantId = me.getStringExtra("restaurantId");
-        String userId = me.getStringExtra("userId");
+        final String plateName = me.getStringExtra("plateName");
+        final String restaurantName = me.getStringExtra("restaurantName");
 
         Button sendReportPlate = (Button)findViewById(R.id.sendReportPlate);
-
+        Button cancelReportPlate = (Button)findViewById(R.id.cancelReportPlate);
+        cancelReportPlate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                onBackPressed();
+            }
+        });
         sendReportPlate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                Plate.reportPlate(plateName,restaurantName);
+                System.out.println("plate: "+plateName);
+                System.out.println("rest: "+restaurantName);
                 onBackPressed();
             }
         });

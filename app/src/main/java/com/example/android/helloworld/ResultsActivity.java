@@ -27,7 +27,7 @@ import java.util.SortedSet;
 public class ResultsActivity extends Fragment {
 
     List<Plate> matchingPlates=null;
-
+    static Plate curPlate;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,8 +43,7 @@ public class ResultsActivity extends Fragment {
 
         Bundle b = getArguments();
         String[] tagsChosen = b.getStringArray("tagsList");
-        int userPoints = 10;
-        matchingPlates = Plate.getAllMatchingPlates(Arrays.asList(tagsChosen), userPoints);
+        matchingPlates = Plate.getAllMatchingPlates(Arrays.asList(tagsChosen),MainActivity.currentUser.getScore());
 
 
         resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -53,7 +52,7 @@ public class ResultsActivity extends Fragment {
                 //send a request to the server and get information
 
                 Plate plate = matchingPlates.get(position);
-
+                curPlate = plate;
                 Bundle arguments = new Bundle();
                 arguments.putString("plateName",plate.getPlateName());
                 arguments.putString("restaurantName",plate.getRestName());

@@ -30,6 +30,7 @@ public class GameActivity extends Fragment {
     private String imgPath = "https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77";
     private WebView slideHolder;
     private TextView _plateName;
+    private TextView _restaurantName;
     NachoTextView nachoTextView;
     Button submitButton;
     Button skipButton;
@@ -46,6 +47,8 @@ public class GameActivity extends Fragment {
         slideHolder.loadUrl(randomPlate.getUrls().get(restRand));
         _plateName = (TextView) root.findViewById(R.id.gamePlateName);
         _plateName.setText(randomPlate.getPlateName());
+        _restaurantName = (TextView) root.findViewById(R.id.gameRestaurantName);
+        _restaurantName.setText(randomPlate.getRestName());
         System.out.println(randomPlate.getPlateName());
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_game);
@@ -57,6 +60,7 @@ public class GameActivity extends Fragment {
             public void onClick(View view) {
                 List<String> tags = nachoTextView.getChipValues();
                 randomPlate.insertNewTags(tags);
+
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, new GameActivity());
                 ft.addToBackStack("game");

@@ -59,7 +59,21 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="14dp"
         android:text="Plate Name"
         android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/gameRestaurantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gamePlateName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="53dp"
+        android:text="Restaurant Name"
+        android:textSize="20sp" />
 </RelativeLayout>

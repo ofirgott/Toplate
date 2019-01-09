@@ -50,7 +50,7 @@ public class DishActivity extends AppCompatActivity {
         _plateTags = findViewById(R.id.plateTags);
 
 
-        Bundle b = getIntent().getExtras().getBundle("arguments");
+        final Bundle b = getIntent().getExtras().getBundle("arguments");
         _plateName.setText(b.getString("plateName"));
         _restaurantName.setText(b.getString("restaurantName"));
         _restaurantAddress.setText(b.getString("restaurantAddress"));
@@ -77,9 +77,8 @@ public class DishActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ReportPlate.class);
-                intent.putExtra("plateId", "2222");
-                intent.putExtra("restaurantId", "2222");
-                intent.putExtra("userId", "3333");
+                intent.putExtra("plateName", b.getString("plateName"));
+                intent.putExtra("restaurantName", b.getString("restaurantName"));
                 startActivity(intent);
             }
         });
@@ -121,9 +120,7 @@ public class DishActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), reportReview.class);
-                    intent.putExtra("reviewIndex", Integer.toString(position));
-                    intent.putExtra("plateId", "2222");
-                    intent.putExtra("userId", "3333");
+                    intent.putExtra("reviewIndex", position);
                     startActivity(intent);
                 }
             });
