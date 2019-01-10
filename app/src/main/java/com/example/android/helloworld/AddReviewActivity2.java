@@ -53,7 +53,6 @@ public class AddReviewActivity2 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_add_review_2, container, false);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, plates);
 
         restaurantName = (TextView) root.findViewById(R.id.restaurantNameChosen);
@@ -73,7 +72,8 @@ public class AddReviewActivity2 extends Fragment {
         addPhotoButton = (ImageButton)root.findViewById(R.id.addPhotoButton);
         sendButton = (Button)root.findViewById(R.id.addReviewSend);
         imgView = (ImageView)root.findViewById(R.id.capture_img);
-        camera = new CameraUpload(this,imgView,addPhotoButton);
+
+        camera = new CameraUpload(this,imgView,addPhotoButton,getContext());
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -83,7 +83,7 @@ public class AddReviewActivity2 extends Fragment {
                 Plate.addToDB("Napolitana",
                                restaurantName.getText().toString(),
                                Arrays.asList("Mozarella", "Tomato"),
-                               Arrays.asList(image_path),
+                               Arrays.asList(camera.getImgPath()),
                                new Review("owner1", ratingBar.getRating(), reviewContent.getText().toString()));
 
                 getActivity().onBackPressed();

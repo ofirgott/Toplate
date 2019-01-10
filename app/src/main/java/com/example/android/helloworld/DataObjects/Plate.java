@@ -509,32 +509,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Random r = new Random();
-                Integer restRand = r.nextInt((int) dataSnapshot.getChildrenCount());
-                Integer counter = 0;
-
-                for (DataSnapshot child : dataSnapshot.getChildren())
-                {
-                    counter++;
-                    if (counter == restRand)
-                    {
-                        Integer plateRand = r.nextInt((int) child.getChildrenCount());
-                        counter = 0;
-                        for (DataSnapshot newChild : child.getChildren())
-                        {
-                            counter++;
-                            if (counter == plateRand)
-                            {
-                                Plate plate = newChild.getValue(Plate.class);
-                                randomPlate.add(plate);
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-                }
-            }
+          }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
