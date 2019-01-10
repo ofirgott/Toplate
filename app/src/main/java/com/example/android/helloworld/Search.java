@@ -10,14 +10,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.helloworld.DataObjects.Plate;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.android.helloworld.DataObjects.User.deleteUserFromDB;
+import static java.lang.Math.min;
 
 public class Search extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -41,6 +45,32 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.menuHelloName);
+        TextView navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
+        TextView navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
+        navUsername.setText("Hello "+MainActivity.currentUser.getName()+"!");
+        int userPoints = MainActivity.currentUser.getScore();
+        navPoints.setText("You have "+userPoints+" points!");
+        Integer numOfPlatesToShow;
+
+        if (userPoints < Plate.USER_LEVEL_1)
+        {
+            numOfPlatesToShow = 2;
+        }
+        else if (userPoints < Plate.USER_LEVEL_2)
+        {
+            numOfPlatesToShow = 5;
+        }
+        else if (userPoints < Plate.USER_LEVEL_3)
+        {
+            numOfPlatesToShow = 10;
+        }
+        else
+        {
+            numOfPlatesToShow = 20;
+        }
+        navLevel.setText("You can see up to "+numOfPlatesToShow+" results");
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -81,7 +111,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
                 getSupportFragmentManager().popBackStack("results", 0);
             }
             else if (topStackName.equals("addReview2")) {
-                getSupportFragmentManager().popBackStack("addReview", 0);
+                getSupportFragmentManager().popBackStack("search", 0);
             }
 
             else {

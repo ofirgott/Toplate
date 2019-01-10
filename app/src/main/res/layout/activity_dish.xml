@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/recyclerView2"
         android:orientation="horizontal"
+        android:layout_marginTop="15dp"
         android:layout_below="@id/plateTags"
         ></android.support.v7.widget.RecyclerView>
 
@@ -73,7 +74,7 @@
         android:layout_marginTop="10dp" />
 
     <ImageButton
-        android:id="@+id/reportReview"
+        android:id="@+id/reportPlate"
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:layout_below="@id/plateName"
@@ -81,18 +82,20 @@
         android:layout_marginRight="10dp"
         app:srcCompat="@drawable/ic_report_black_24dp" />
 
+    <!--
     <HorizontalScrollView
         android:id="@+id/horizontalScroll"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/plateTags"
+        android:layout_centerHorizontal="true"
         android:layout_above="@+id/reviewsList">
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal" />
     </HorizontalScrollView>
-
+-->
 
 </RelativeLayout>

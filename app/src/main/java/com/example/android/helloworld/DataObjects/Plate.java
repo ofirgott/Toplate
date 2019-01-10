@@ -558,19 +558,24 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 if (mutableData.getChildrenCount() > 0) {
                     Random r = new Random();
                     Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
+                    System.out.println("rest number: "+restRand);
                     Integer counter = 0;
 
                     for (MutableData child : mutableData.getChildren())
                     {
+                        System.out.println("rest counter: "+counter);
                         if (counter == restRand)
                         {
                             Integer plateRand = r.nextInt((int) child.getChildrenCount());
+                            System.out.println("plate number: "+plateRand);
                             int plateCounter = 0;
                             for (MutableData newChild : child.getChildren())
                             {
+                                System.out.println("plate counter: "+plateCounter);
                                 if (plateCounter == plateRand)
                                 {
                                     Plate plate = newChild.getValue(Plate.class);
+                                    System.out.println("chosen plate name: "+plate.getPlateName());
                                     randomPlate.add(plate);
                                     break;
                                 }

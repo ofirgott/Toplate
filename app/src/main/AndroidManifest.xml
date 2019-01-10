@@ -7,7 +7,9 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-feature android:name="android.hardware.camera" ></uses-feature>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="229751781251556" />
@@ -24,7 +26,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>ך
         </activity>
         <activity
             android:name=".Search"
@@ -32,8 +34,11 @@
         <activity
             android:name=".reportReview"
             android:theme="@style/AppTheme.PopUpTheme" />
+        <activity
+            android:name=".ReportPlate"
+            android:theme="@style/AppTheme.PopUpTheme" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MyProfile" />
+        <activity android:name=".DishActivity" />
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"

@@ -1,5 +1,6 @@
 package com.example.android.helloworld;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ import java.util.SortedSet;
 public class ResultsActivity extends Fragment {
 
     List<Plate> matchingPlates=null;
-
+    static Plate curPlate;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class ResultsActivity extends Fragment {
 
         Bundle b = getArguments();
         String[] tagsChosen = b.getStringArray("tagsList");
-        int userPoints = 10;
-        matchingPlates = Plate.getAllMatchingPlates(Arrays.asList(tagsChosen), userPoints);
+        matchingPlates = Plate.getAllMatchingPlates(Arrays.asList(tagsChosen),MainActivity.currentUser.getScore());
 
 
         resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -52,14 +52,13 @@ public class ResultsActivity extends Fragment {
                 //send a request to the server and get information
 
                 Plate plate = matchingPlates.get(position);
-
-                DishActivity plateFragment = new DishActivity();
+                curPlate = plate;
                 Bundle arguments = new Bundle();
                 arguments.putString("plateName",plate.getPlateName());
                 arguments.putString("restaurantName",plate.getRestName());
                 arguments.putString("restaurantAddress",plate.getRestAddress());
                 arguments.putFloat("numStars",plate.getRating());
-
+                arguments.putStringArrayList("Urls",new ArrayList<String>(plate.getUrls()));
                 List<Review> reviews = plate.getReviews();
                 String[] reviewersNames  = new String[reviews.size()];
                 String[] reviewsContent = new String[reviews.size()];
@@ -93,13 +92,16 @@ public class ResultsActivity extends Fragment {
                 }
                 arguments.putStringArray("plateTags",shownTags);
 
-                plateFragment.setArguments(arguments);
 
 
+/*
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container,plateFragment);
                 ft.addToBackStack("dish");
-                ft.commit();
+                ft.commit();*/
+                Intent intent = new Intent(getActivity(), DishActivity.class);
+                intent.putExtra("arguments",arguments);
+                startActivity(intent);
             }
         });
 
