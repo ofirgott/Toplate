@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
                             RC_SIGN_IN
                     );
 
+                    Plate plate = Plate.getRandomPlate();
+                    if (plate != null)
+                    {
+                        System.out.println(plate.getPlateName() +", " + plate.getRestName());
+                    }
 
                 }
             }
