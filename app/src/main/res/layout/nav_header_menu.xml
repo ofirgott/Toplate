@@ -17,7 +17,7 @@
         android:id="@+id/imageView"
         android:layout_width="89dp"
         android:layout_height="96dp"
-        app:srcCompat="@mipmap/avatar" />
+        android:src="@mipmap/avatar" />
 
     <TextView
         android:id="@+id/menuHelloName"

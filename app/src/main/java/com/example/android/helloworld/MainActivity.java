@@ -11,6 +11,8 @@ import com.example.android.helloworld.DataObjects.Plate;
 import com.example.android.helloworld.DataObjects.Review;
 import com.example.android.helloworld.DataObjects.User;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.data.client.AuthUiInitProvider;
+import com.firebase.ui.auth.util.data.ProviderUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.FirebaseError;
@@ -89,13 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setCurrentUser(final String uid) {
         DatabaseReference userRef = database.getReference().child("Users");
-
         userRef.runTransaction(new Transaction.Handler() {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 User user = mutableData.child(uid).getValue(User.class);
                 if (user == null) {
                     user = new User(mFirebaseAuth.getCurrentUser().getUid(),
-                            mFirebaseAuth.getCurrentUser().getDisplayName(),
+                            getDisplayName(),
                             50,
                             new ArrayList<Review>(),
                             new ArrayList<Plate>(),
@@ -126,6 +127,16 @@ public class MainActivity extends AppCompatActivity {
             Thread.sleep(2000);
         } catch (java.lang.InterruptedException e) {}
 
+    }
+
+    private String getDisplayName() {
+        if(mFirebaseAuth.getCurrentUser().getDisplayName() != null){
+            return mFirebaseAuth.getCurrentUser().getDisplayName();
+        }
+        else if(mFirebaseAuth.getCurrentUser().getPhoneNumber() != null){
+            return mFirebaseAuth.getCurrentUser().getPhoneNumber();
+        }
+        else return "Anonymous user";
     }
 
 
