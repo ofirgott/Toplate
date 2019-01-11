@@ -75,7 +75,7 @@ public class AddReviewActivity2 extends Fragment {
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_addreview);
         nachoTextView.setAdapter(tagsAdapter);
         imgView = (ImageView)root.findViewById(R.id.capture_img);
-        camera = new CameraUpload(this,imgView,addPhotoButton);
+        camera = new CameraUpload(this,imgView,addPhotoButton,getContext());
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -85,9 +85,9 @@ public class AddReviewActivity2 extends Fragment {
                 Plate.addToDB(platesComplete.getText().toString(),
                                restaurantName.getText().toString(),
                                 tags,
-                               Arrays.asList(image_path),
+                               Arrays.asList(camera.getImgPath()),
                                new Review(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), ratingBar.getRating(), reviewContent.getText().toString()));
-
+                Search.UpdatePointsLevel();
                 getActivity().onBackPressed();
             }
         });

@@ -32,7 +32,7 @@ import static java.lang.Math.min;
 
 final public class Plate implements Serializable, Comparable<Plate>  {
 
-    static private final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
+    static public final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
     static private final FirebaseStorage storageBase = FirebaseStorage.getInstance();
 
     static public String RESTAURANTS = "Restaurants";
@@ -376,7 +376,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         } catch (java.lang.InterruptedException e) {}
 
         return plateNames;
-    }
+}
 
     public static void addToDB(final String PlateName, final String RestName, final List<String> Tags, final List<String> Urls, final Review review) {
 

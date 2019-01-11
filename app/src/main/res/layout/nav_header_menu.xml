@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/menuHelloName"
-        android:layout_width="match_parent"
+        android:layout_width="353dp"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/nav_header_title"
@@ -31,6 +31,24 @@
 
     <TextView
         android:id="@+id/menuPoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="blaaaaa"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/menuResultsNum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I'm not your Toy!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/menuLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="You have 522 points!"
@@ -38,7 +56,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/menuLevel"
+        android:id="@+id/menuReportStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="You can see up to 3 results!"
