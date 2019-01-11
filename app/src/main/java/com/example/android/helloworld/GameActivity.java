@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,10 +38,9 @@ import java.util.Random;
 
 public class GameActivity extends Fragment {
 
-    public static ImageView gameImage;
-
-    public static TextView _plateName;
-    public static TextView _restaurantName;
+    public  TextView _plateName;
+    public  TextView _restaurantName;
+    private ArrayList<String> mImageUrls = new ArrayList<>();
     NachoTextView nachoTextView;
     Button submitButton;
     Button skipButton;
@@ -58,14 +59,27 @@ public class GameActivity extends Fragment {
         _plateName.setText(randomPlate.getPlateName());
         _restaurantName = (TextView) root.findViewById(R.id.gameRestaurantName);
         _restaurantName.setText(randomPlate.getRestName());
-        gameImage = (ImageView) root.findViewById(R.id.imageGame);
-        gameImage.setImageURI(Uri.parse(CameraUpload.getUrl(randomPlate.getUrls().get(randomPic))));
         //System.out.println(randomPlate.getPlateName());
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_game);
         nachoTextView.setAdapter(tagsAdapter);
         submitButton = (Button)root.findViewById(R.id.submitButton);
         skipButton = (Button)root.findViewById(R.id.skipButton);
+
+        mImageUrls = new ArrayList<String>(randomPlate.getUrls());
+        for (int i = 0; i < mImageUrls.size(); i++){
+            mImageUrls.set(i,CameraUpload.getUrl(mImageUrls.get(i)));
+        }
+        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerViewGame);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), mImageUrls,1);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -81,8 +95,11 @@ public class GameActivity extends Fragment {
                 replaceGamePlate();
             }
         });
+
         return root;
     }
+
+
 
     void replaceGamePlate(){
         //Plate newPlate = Plate.getRandomPlate();
@@ -125,4 +142,8 @@ public class GameActivity extends Fragment {
         //_restaurantName.setText(newPlate.getRestName());
         //gameImage.setImageURI(Uri.parse(CameraUpload.getUrl(newPlate.getUrls().get(randomPic))));
     }
+
+
+
+
 }

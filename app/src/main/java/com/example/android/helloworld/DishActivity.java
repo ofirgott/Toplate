@@ -146,7 +146,7 @@ public class DishActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView2);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mImageUrls,0);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
