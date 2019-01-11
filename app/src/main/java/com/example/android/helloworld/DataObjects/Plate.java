@@ -607,7 +607,4 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             return null;
         }
     }
-
-
-
 }
