@@ -3,6 +3,8 @@ package com.example.android.helloworld.DataObjects;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.android.helloworld.MainActivity;
+import com.example.android.helloworld.DataObjects.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,21 +16,16 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import static java.lang.Math.min;
+import static java.lang.Math.random;
 
 final public class Plate implements Serializable, Comparable<Plate>  {
 
@@ -255,8 +252,9 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         ref.runTransaction(new Transaction.Handler() {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Plate plate = mutableData.getValue(Plate.class);
-                if (plate != null)
+                if (plate != null && !newTags.isEmpty())
                 {
+                    MainActivity.currentUser.incrementCurrentUserScore(5);
                     plate.updateTags(newTags);
                     mutableData.child(TAGS).setValue(plate.Tags);
                     plate.insertToTags();
@@ -315,6 +313,8 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                         if (rev.Valid())
                         {
                             rev.setReportsCounter(rev.getReportsCounter() + 1);
+                            User.incrementUserSpammerCounter(rev.getOwnerId());
+                            User.decrementUserScore(rev.getOwnerId(), 10);
                             mutableData.child(currPlate.PlateName).child("Reviews").child(reviewIndex.toString()).setValue(rev);
                             for (String tag: currPlate.Tags.keySet())
                             {
@@ -361,6 +361,11 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         ref.runTransaction(new Transaction.Handler() {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 if (mutableData.hasChildren()) {
+                    if (!plateNames.isEmpty())
+                    {
+                        plateNames.clear();
+                    }
+
                     Iterator<MutableData> it = mutableData.getChildren().iterator();
 
                     while (it.hasNext()) {
@@ -402,6 +407,15 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
                 mutableData.child(PlateName).setValue(plate.toMap());
                 plate.insertToTags();
+
+                Integer scoreToAdd = 20;
+                if (!Urls.isEmpty())
+                {
+                    scoreToAdd = 30;
+                }
+
+                MainActivity.currentUser.incrementCurrentUserScore(scoreToAdd);
+                MainActivity.currentUser.incrementRestReviewsCounter(RestName);
 
                 return Transaction.success(mutableData);
             }
@@ -485,7 +499,12 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                     }
                     else
                     {
-                        numOfPlatesToShow = min(20, allMatchingPlates.size());
+                        numOfPlatesToShow = allMatchingPlates.size();
+                    }
+
+                    if (!matchingPlates.isEmpty())
+                    {
+                        matchingPlates.clear();
                     }
 
                     for (int i = 0; i < numOfPlatesToShow; i++)
@@ -523,6 +542,8 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 Plate plate = mutableData.child(plateName).getValue(Plate.class);
                 if (plate  != null)
                 {
+                    User.decrementUserScore(plate.getOwnerId(), 20);
+                    User.incrementUserSpammerCounter(plate.getOwnerId());
                     plate.ReportsCounter++;
                     if (plate.ReportsCounter > MAX_ALLOWED_REPORTS)
                     {
@@ -559,25 +580,28 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 if (mutableData.getChildrenCount() > 0) {
                     Random r = new Random();
                     Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
-                    System.out.println("rest number: "+restRand);
                     Integer counter = 0;
 
                     for (MutableData child : mutableData.getChildren())
                     {
-                        System.out.println("rest counter: "+counter);
                         if (counter == restRand)
                         {
+                            System.out.println("random rest: " + restRand + ", " + child.getKey());
+
                             Integer plateRand = r.nextInt((int) child.getChildrenCount());
-                            System.out.println("plate number: "+plateRand);
                             int plateCounter = 0;
                             for (MutableData newChild : child.getChildren())
                             {
-                                System.out.println("plate counter: "+plateCounter);
                                 if (plateCounter == plateRand)
                                 {
                                     Plate plate = newChild.getValue(Plate.class);
-                                    System.out.println("chosen plate name: "+plate.getPlateName());
+                                    System.out.println("plate: " + plateRand + ", " + plate.getPlateName());
+                                    if (!randomPlate.isEmpty())
+                                    {
+                                        randomPlate.clear();
+                                    }
                                     randomPlate.add(plate);
+                                    System.out.println("plate in list: " + randomPlate.get(0).getPlateName());
                                     break;
                                 }
 
@@ -604,8 +628,25 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             Thread.sleep(5000);
         } catch (java.lang.InterruptedException e) {}
 
+        Integer counter = 0;
+
+        while (randomPlate.isEmpty())
+        {
+            if (counter == 5)
+            {
+                break;
+            }
+
+            try {
+                Thread.sleep(5000);
+            } catch (java.lang.InterruptedException e) {}
+
+            counter++;
+        }
+
         if (!randomPlate.isEmpty())
         {
+            System.out.println("returning plate in list: " + randomPlate.get(0).getPlateName());
             return randomPlate.get(0);
         }
         else

@@ -98,10 +98,13 @@ public class User implements Serializable {
         else{
             reviewsPerRest.put(restName, reviewsPerRest.get(restName) + 1);
         }
+
+        updateCurrentUserInDBOffline(this);
     }
 
     public void incrementCurrentUserScore(int value){
         score += value;
+        updateCurrentUserInDBOffline(this);
     }
 
     public static void decrementUserScore(final String uid, final int value){
@@ -125,7 +128,7 @@ public class User implements Serializable {
         });
     }
 
-    public static void  incrementUserSpammerCounter(final String uid){
+    public static void incrementUserSpammerCounter(final String uid){
         DatabaseReference userRef = database.getReference().child("Users");
         userRef.runTransaction(new Transaction.Handler() {
             public Transaction.Result doTransaction(MutableData mutableData) {
