@@ -42,8 +42,9 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     static public String[] AppRestaurants = new String[] {"Arepas","American Diner","American Burger","Azura","Amora Mio", "Alupa", "Vong", "Viva Mia", "Velvet Italiano","Mezcal","Joya","Jiraff"};
     static public String[] AppAddresses = new String[] {"Rothschild 1, Tel Aviv","Rothschild 2, Tel Aviv","Rothschild 3, Tel Aviv","Rothschild 4, Tel Aviv","Rothschild 5, Tel Aviv","Rothschild 6, Tel Aviv","Rothschild 7, Tel Aviv","Rothschild 8, Tel Aviv","Rothschild 9, Tel Aviv","Habait Shel Oz","Habarzel 1","Habarzel 2"};
 
-    static public Integer USER_LEVEL_1 = 150;
-    static public Integer USER_LEVEL_2 = 500;
+    static public Integer USER_LEVEL_1 = 100;
+    static public Integer USER_LEVEL_2 = 250;
+    static public Integer USER_LEVEL_3 = 500;
 
     static public Integer MAX_ALLOWED_REPORTS = 5;
 
@@ -102,6 +103,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         result.put("OwnerId", OwnerId);
         result.put("PlateName", PlateName);
         result.put("RestName", RestName);
+        result.put("RestAddress", RestAddress);
         result.put("Rating", Rating);
         result.put("Tags", Tags);
         result.put("Reviews", Reviews);
@@ -471,15 +473,19 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
                     if (userPoints < USER_LEVEL_1)
                     {
-                        numOfPlatesToShow = min(3, allMatchingPlates.size());
+                        numOfPlatesToShow = min(2, allMatchingPlates.size());
                     }
                     else if (userPoints < USER_LEVEL_2)
                     {
-                        numOfPlatesToShow = min(7, allMatchingPlates.size());
+                        numOfPlatesToShow = min(5, allMatchingPlates.size());
+                    }
+                    else if (userPoints < USER_LEVEL_3)
+                    {
+                        numOfPlatesToShow = min(10, allMatchingPlates.size());
                     }
                     else
                     {
-                        numOfPlatesToShow = min(15, allMatchingPlates.size());
+                        numOfPlatesToShow = min(20, allMatchingPlates.size());
                     }
 
                     for (int i = 0; i < numOfPlatesToShow; i++)
@@ -607,4 +613,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             return null;
         }
     }
+
+
+
 }

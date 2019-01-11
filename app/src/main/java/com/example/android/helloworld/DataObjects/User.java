@@ -2,12 +2,16 @@ package com.example.android.helloworld.DataObjects;
 
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +100,52 @@ public class User implements Serializable {
         }
     }
 
+    public void incrementCurrentUserScore(int value){
+        score += value;
+    }
+
+    public static void decrementUserScore(final String uid, final int value){
+        DatabaseReference userRef = database.getReference().child("Users");
+        userRef.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                User user = mutableData.child(uid).getValue(User.class);
+                user.score -= value;
+
+                mutableData.child(uid).setValue(user.toMap());
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+    }
+
+    public static void  incrementUserSpammerCounter(final String uid){
+        DatabaseReference userRef = database.getReference().child("Users");
+        userRef.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                User user = mutableData.child(uid).getValue(User.class);
+                user.markedAsSpammer++;
+
+                mutableData.child(uid).setValue(user.toMap());
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+    }
+
     public Map<String, Integer> getReviewsPerRest() {
         return reviewsPerRest;
     }
@@ -148,7 +198,24 @@ public class User implements Serializable {
         return imgUrl;
     }
 
+    public void updateCurrentUserInDBOffline(final User user){
+        DatabaseReference userRef = database.getReference().child("Users");
+        userRef.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                mutableData.child(user.uid).setValue(user.toMap());
+                return Transaction.success(mutableData);
+            }
 
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b,
+                                   DataSnapshot dataSnapshot) {
+                if (databaseError != null) {
+                    System.out.println(databaseError.getMessage());
+                }
+            }
+        });
+
+    }
 
     public static void deleteUserFromDB(String uid){
         database.getReference().child("Users").child(uid).setValue(null , new DatabaseReference.CompletionListener() {

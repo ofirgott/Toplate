@@ -1,5 +1,8 @@
 package com.example.android.helloworld;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +24,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+
+import static android.view.View.VISIBLE;
 import static com.example.android.helloworld.DataObjects.User.deleteUserFromDB;
+import static com.example.android.helloworld.R.id.imageView;
 import static java.lang.Math.min;
 
 public class Search extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawer;
+    private String TAG = "Search";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +60,20 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
+        ImageView img = (ImageView)  headerView.findViewById(R.id.imageView);
         TextView navUsername = (TextView) headerView.findViewById(R.id.menuHelloName);
         TextView navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
         TextView navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
         navUsername.setText("Hello "+MainActivity.currentUser.getName()+"!");
+//        if(MainActivity.currentUser.getImgUrl() != null){
+//            img.setImageURI(Uri.parse(MainActivity.currentUser.getImgUrl()));
+//        }
+//        else{
+//            img.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
+//        }
+        img.setMaxWidth(89);
+        img.setMaxHeight(96);
+        img.setVisibility(VISIBLE);
         int userPoints = MainActivity.currentUser.getScore();
         navPoints.setText("You have "+userPoints+" points!");
         Integer numOfPlatesToShow;
@@ -174,4 +198,5 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
