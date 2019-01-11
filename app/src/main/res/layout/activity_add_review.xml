@@ -10,17 +10,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
         />
-
+    <TextView
+        android:id="@+id/counterPassed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/place_autocomplete_fragment"
+        android:text=""
+        android:textSize="25sp"
+        android:textColor="#ff0000"
+        />
     <Button
         android:id="@+id/addReviewSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/place_autocomplete_fragment"
+        android:layout_marginTop="130dp"
+        android:layout_below="@id/counterPassed"
         android:text="continue" />
 
 

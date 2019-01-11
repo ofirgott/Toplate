@@ -30,6 +30,7 @@ public class User implements Serializable {
 
     public User() {
         // Default constructor required for calls to Data  Snapshot.getValue(Post.class)
+        this.reviewsPerRest = new HashMap<>();
     }
 
 

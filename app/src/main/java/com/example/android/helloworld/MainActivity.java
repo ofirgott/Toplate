@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                                     .setAvailableProviders(providers)
                                     .setIsSmartLockEnabled(false)
                                     .setLogo(R.mipmap.ic_launcher_foreground)
-
                                     .build(),
                             RC_SIGN_IN
                     );
