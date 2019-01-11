@@ -46,15 +46,7 @@ public class SearchFragment extends Fragment {
                 ft.replace(R.id.fragment_container,resultsFragment);
                 ft.addToBackStack("results");
                 ft.commit();
-
-
-
-
-
-
-
-
-
+                nachoTextView.clearListSelection();
             }
         });
 

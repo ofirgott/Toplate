@@ -22,6 +22,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
+import com.example.android.helloworld.DataObjects.CameraUpload;
+
 import java.util.ArrayList;
 
 
@@ -60,7 +62,7 @@ public class DishActivity extends AppCompatActivity {
         _ratings = b.getFloatArray("ratings");
         mImageUrls = b.getStringArrayList("Urls");
         for (int i = 0; i < mImageUrls.size(); i++){
-            mImageUrls.set(i,"gs://toplate-85a31.appspot.com/"+mImageUrls.get(i));
+            mImageUrls.set(i,CameraUpload.getUrl(mImageUrls.get(i)));
         }
         String[] plateTagsArray = b.getStringArray("plateTags");
         String tagsString = "Tags: ";

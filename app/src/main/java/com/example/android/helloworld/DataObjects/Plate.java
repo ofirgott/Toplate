@@ -29,7 +29,7 @@ import static java.lang.Math.random;
 
 final public class Plate implements Serializable, Comparable<Plate>  {
 
-    static private final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
+    static public final FirebaseDatabase dataBase = FirebaseDatabase.getInstance();
     static private final FirebaseStorage storageBase = FirebaseStorage.getInstance();
 
     static public String RESTAURANTS = "Restaurants";
@@ -390,7 +390,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         } catch (java.lang.InterruptedException e) {}
 
         return plateNames;
-    }
+}
 
     public static void addToDB(final String PlateName, final String RestName,final String RestAddress, final List<String> Tags, final List<String> Urls, final Review review) {
 
@@ -625,7 +625,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         });
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (java.lang.InterruptedException e) {}
 
         Integer counter = 0;

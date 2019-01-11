@@ -39,6 +39,8 @@ import static java.lang.Math.min;
 public class Search extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawer;
+    public static TextView navPoints;
+    public static TextView navLevel;
     private String TAG = "Search";
 
     @Override
@@ -62,8 +64,10 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         View headerView = navigationView.getHeaderView(0);
         ImageView img = (ImageView)  headerView.findViewById(R.id.imageView);
         TextView navUsername = (TextView) headerView.findViewById(R.id.menuHelloName);
-        TextView navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
-        TextView navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
+        navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
+        TextView navResultsNum = (TextView) headerView.findViewById(R.id.menuResultsNum);
+        navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
+        TextView navReportStatus = (TextView) headerView.findViewById(R.id.menuReportStatus);
         navUsername.setText("Hello "+MainActivity.currentUser.getName()+"!");
 //        if(MainActivity.currentUser.getImgUrl() != null){
 //            img.setImageURI(Uri.parse(MainActivity.currentUser.getImgUrl()));
@@ -76,26 +80,33 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         img.setVisibility(VISIBLE);
         int userPoints = MainActivity.currentUser.getScore();
         navPoints.setText("You have "+userPoints+" points!");
-        Integer numOfPlatesToShow;
 
+        Integer numOfPlatesToShow;
+        String userLevel;
         if (userPoints < Plate.USER_LEVEL_1)
         {
             numOfPlatesToShow = 2;
+            userLevel = "Beginner";
         }
         else if (userPoints < Plate.USER_LEVEL_2)
         {
             numOfPlatesToShow = 5;
+            userLevel = "Medium";
         }
         else if (userPoints < Plate.USER_LEVEL_3)
         {
             numOfPlatesToShow = 10;
+            userLevel = "Pro";
         }
         else
         {
             numOfPlatesToShow = 20;
+            userLevel = "Master";
         }
-        navLevel.setText("You can see up to "+numOfPlatesToShow+" results");
-
+        navResultsNum.setText("You can see up to "+numOfPlatesToShow+" results");
+        navReportStatus.setText("Reports: "+MainActivity.currentUser.getMarkedAsSpammer());
+        navPoints.setText("You have "+userPoints+" points!");
+        navLevel.setText("Level: "+userLevel);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -110,6 +121,29 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         }
 
        // User info = User.getCurrentUserPersonalInfo();
+    }
+    public static void UpdatePointsLevel(){
+        int userPoints = MainActivity.currentUser.getScore();
+        navPoints.setText("You have "+userPoints+" points!");
+        String userLevel;
+        if (userPoints < Plate.USER_LEVEL_1)
+        {
+            userLevel = "Beginner";
+        }
+        else if (userPoints < Plate.USER_LEVEL_2)
+        {
+            userLevel = "Medium";
+        }
+        else if (userPoints < Plate.USER_LEVEL_3)
+        {
+            userLevel = "Pro";
+        }
+        else
+        {
+            userLevel = "Master";
+        }
+        navPoints.setText("You have "+userPoints+" points!");
+        navLevel.setText("Level: "+userLevel);
     }
 
 
@@ -198,5 +232,4 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
