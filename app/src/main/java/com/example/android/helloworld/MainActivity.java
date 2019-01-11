@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.example.android.helloworld.DataObjects.User.*;
@@ -104,7 +105,8 @@ public class MainActivity extends AppCompatActivity {
                             new ArrayList<Review>(),
                             new ArrayList<Plate>(),
                             0,
-                            "");
+                            "",
+                            new HashMap<String, Integer>());
                     Log.i("AUTH","Creating new user for " + mFirebaseAuth.getCurrentUser().getDisplayName() + ". id = " + mFirebaseAuth.getCurrentUser().getUid());
 
                 }

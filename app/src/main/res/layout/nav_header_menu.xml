@@ -20,6 +20,7 @@
         app:srcCompat="@mipmap/avatar" />
 
     <TextView
+        android:id="@+id/menuHelloName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -29,18 +30,18 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/menuPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nav_header_subtitle"
+        android:text="You have 522 points!"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/menuLevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="You have 522 points!"
+        android:text="You can see up to 3 results!"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
