@@ -23,15 +23,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
+    private int mSize=0; //0 - small, 1 - big
 
-    public RecyclerViewAdapter(Context context, ArrayList<String> images) {
+    public RecyclerViewAdapter(Context context, ArrayList<String> images,int size) {
         mImages = images;
         mContext = context;
+        mSize = size;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+
+        View view;
+        if(mSize==0)
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+        else
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem_big, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -49,7 +56,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, mImages.get(position), Toast.LENGTH_SHORT).show();
             }
         });
     }

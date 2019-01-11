@@ -13,17 +13,17 @@
         android:layout_marginStart="87dp"
         android:layout_marginLeft="87dp"
         android:layout_marginTop="7dp"
-        android:layout_below="@id/imageGame"
+        android:layout_below="@id/recyclerViewGame"
         android:text="submit" />
 
-    <ImageView
-    android:id="@+id/imageGame"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-        android:layout_marginTop="5dp"
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerViewGame"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
         android:layout_below="@id/nacho_text_view_game"
-        android:layout_centerHorizontal="true"/>
-
+        ></android.support.v7.widget.RecyclerView>
     <Button
         android:id="@+id/skipButton"
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_marginEnd="87dp"
         android:layout_marginRight="87dp"
         android:layout_marginTop="7dp"
-        android:layout_below="@id/imageGame"
+        android:layout_below="@id/recyclerViewGame"
         android:text="skip" />
 
 
