@@ -42,15 +42,16 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     static public String[] AppRestaurants = new String[] {"Arepas","American Diner","American Burger","Azura","Amora Mio", "Alupa", "Vong", "Viva Mia", "Velvet Italiano","Mezcal","Joya","Jiraff"};
     static public String[] AppAddresses = new String[] {"Rothschild 1, Tel Aviv","Rothschild 2, Tel Aviv","Rothschild 3, Tel Aviv","Rothschild 4, Tel Aviv","Rothschild 5, Tel Aviv","Rothschild 6, Tel Aviv","Rothschild 7, Tel Aviv","Rothschild 8, Tel Aviv","Rothschild 9, Tel Aviv","Habait Shel Oz","Habarzel 1","Habarzel 2"};
 
-    static public Integer USER_LEVEL_1 = 5;
-    static public Integer USER_LEVEL_2 = 15;
-    static public Integer USER_LEVEL_3 = 30;
+    static public Integer USER_LEVEL_1 = 100;
+    static public Integer USER_LEVEL_2 = 250;
+    static public Integer USER_LEVEL_3 = 500;
 
     static public Integer MAX_ALLOWED_REPORTS = 5;
 
     private String OwnerId;
     private String PlateName;
     private String RestName;
+    private String RestAddress;
     private Float Rating;
     private Integer ReportsCounter;
     private List<Review> Reviews;
@@ -61,10 +62,11 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         // Default constructor required for calls to DataSnapshot.getValue
     }
 
-    public Plate(String Name, String RestName, List<String> tags,  List<String> urls, Review review) {
+    public Plate(String Name, String RestName, String RestAddress, List<String> tags,  List<String> urls, Review review) {
         this.OwnerId = review.getOwnerId();
         this.PlateName = Name;
         this.RestName = RestName;
+        this.RestAddress = RestAddress;
         this.Rating = review.getRating();
         this.ReportsCounter = 0;
         this.Tags = new HashMap<>();
@@ -83,14 +85,16 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         this.Reviews.add(review);
     }
 
-    public static String getAddress(String restName){
-        for (int i = 0; i < AppRestaurants.length; i++){
-            if (AppRestaurants[i].equals(restName)){
-                return AppAddresses[i];
-            }
-        }
-        return null;
-    }
+//    public static String getAddress(String restName){
+//        for (int i = 0; i < AppRestaurants.length; i++){
+//            if (AppRestaurants[i].equals(restName)){
+//                return AppAddresses[i];
+//            }
+//        }
+//        return null;
+//    }
+
+
 
     public Map<String, Object> toMap() {
 
@@ -99,6 +103,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         result.put("OwnerId", OwnerId);
         result.put("PlateName", PlateName);
         result.put("RestName", RestName);
+        result.put("RestAddress", RestAddress);
         result.put("Rating", Rating);
         result.put("Tags", Tags);
         result.put("Reviews", Reviews);
@@ -141,6 +146,10 @@ final public class Plate implements Serializable, Comparable<Plate>  {
 
     public String getRestName() {
         return RestName;
+    }
+
+    public String getRestAddress() {
+        return RestAddress;
     }
 
     public void setRestName(String restName) {
@@ -378,7 +387,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         return plateNames;
 }
 
-    public static void addToDB(final String PlateName, final String RestName, final List<String> Tags, final List<String> Urls, final Review review) {
+    public static void addToDB(final String PlateName, final String RestName,final String RestAddress, final List<String> Tags, final List<String> Urls, final Review review) {
 
         DatabaseReference restRef = dataBase.getReference().child(RESTAURANTS).child(RestName);
 
@@ -386,7 +395,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Plate plate = mutableData.child(PlateName).getValue(Plate.class);
                 if (plate == null) {
-                    plate = new Plate(PlateName, RestName, Tags, Urls, review);
+                    plate = new Plate(PlateName, RestName, RestAddress, Tags, Urls, review);
                 } else {
                     plate.updateUrlsTagsAndReviews(Urls, Tags, review);
                 }

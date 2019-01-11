@@ -56,7 +56,7 @@ public class ResultsActivity extends Fragment {
                 Bundle arguments = new Bundle();
                 arguments.putString("plateName",plate.getPlateName());
                 arguments.putString("restaurantName",plate.getRestName());
-                arguments.putString("restaurantAddress",Plate.getAddress(plate.getRestName()));
+                arguments.putString("restaurantAddress",plate.getRestAddress());
                 arguments.putFloat("numStars",plate.getRating());
                 arguments.putStringArrayList("Urls",new ArrayList<String>(plate.getUrls()));
                 List<Review> reviews = plate.getReviews();
@@ -140,7 +140,7 @@ public class ResultsActivity extends Fragment {
             Plate plate = matchingPlates.get(position);
             textview_plate.setText(plate.getPlateName());
             textview_restaurant.setText(plate.getRestName());
-            textview_address.setText(Plate.getAddress(plate.getRestName()));
+            textview_address.setText(plate.getRestAddress());
             ratingBar.setRating((float)(plate.getRating()));
 
             return view;

@@ -50,9 +50,9 @@ public class AddReviewActivity extends Fragment {
                 if (place.getPlaceTypes().contains(TYPE_RESTAURANT)) {
                     Log.i(TAG, "Place: " + place.getName());
                     final String restaurant = place.getName().toString();
-                    float restaurant_rating = place.getRating();
-                    String adress = place.getAddress().toString();
-                    String rest_id = place.getId();
+                    final float restaurantGoogleRating = place.getRating();
+                    final String restaurantAddress = place.getAddress().toString();
+
                     autocompleteFragment.setMenuVisibility(false);
 
                     Button continueButton = (Button) getView().findViewById(R.id.addReviewSend);
@@ -65,6 +65,8 @@ public class AddReviewActivity extends Fragment {
 
                             Bundle arguments = new Bundle();
                             arguments.putString("restaurantName", restaurant);
+                            arguments.putString("restaurantAddress", restaurantAddress);
+                            arguments.putFloat("restaurantGoogleRating", restaurantGoogleRating);
                             addReview2Fragment.setArguments(arguments);
 
 
@@ -79,7 +81,7 @@ public class AddReviewActivity extends Fragment {
 
                  else {
                     autocompleteFragment.setText("");
-                    Toast.makeText(getActivity(), "place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -35,11 +35,13 @@ public class AddReviewActivity2 extends Fragment {
     AutoCompleteTextView platesComplete;
     ArrayList<String> plates = new ArrayList<>();
     TextView restaurantName;
+    TextView restaurantGoogleRating;
     RatingBar ratingBar;
     EditText reviewContent;
     ImageButton addPhotoButton;
     Button sendButton;
     NachoTextView nachoTextView;
+    String restaurantAddress;
 
     CameraUpload camera;
     private static final int CAMERA_REQ_CODE = 0;
@@ -59,9 +61,11 @@ public class AddReviewActivity2 extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, plates);
 
         restaurantName = (TextView) root.findViewById(R.id.restaurantNameChosen);
+        restaurantGoogleRating = (TextView) root.findViewById(R.id.restaurantGoogleRating);
         Bundle b = getArguments();
         restaurantName.setText(b.getString("restaurantName"));
-
+        restaurantGoogleRating.setText("Restaurant's Google rating : " + b.getFloat("restaurantGoogleRating"));
+        restaurantAddress = b.getString("restaurantAddress");
         platesComplete = (AutoCompleteTextView) root.findViewById(R.id.PlatesComplete);
         List<String> allRestPlates = Plate.getAllRestPlates(restaurantName.getText().toString());
         plates.addAll(allRestPlates);
@@ -84,6 +88,7 @@ public class AddReviewActivity2 extends Fragment {
                 List<String> tags = nachoTextView.getChipValues();
                 Plate.addToDB(platesComplete.getText().toString(),
                                restaurantName.getText().toString(),
+                                restaurantAddress,
                                 tags,
                                Arrays.asList(camera.getImgPath()),
                                new Review(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), ratingBar.getRating(), reviewContent.getText().toString()));
