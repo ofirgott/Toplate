@@ -44,6 +44,8 @@ public class GameActivity extends Fragment {
     NachoTextView nachoTextView;
     Button submitButton;
     Button skipButton;
+    public RecyclerView recyclerView;
+    TextView counterPassed;
 
     @Nullable
     @Override
@@ -74,12 +76,16 @@ public class GameActivity extends Fragment {
         mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
         mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
 
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerViewGame);
+        recyclerView = root.findViewById(R.id.recyclerViewGame);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), mImageUrls,1);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
-
+        counterPassed = (TextView)root.findViewById(R.id.counterPassed2);
+        if (MainActivity.currentUser.getMarkedAsSpammer() >= 5){
+            counterPassed.setText("You were marked as a spammer, you can't contribute to our app anymore.");
+            submitButton.setEnabled(false);
+            skipButton.setEnabled(false);
+        }
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -102,45 +108,25 @@ public class GameActivity extends Fragment {
 
 
     void replaceGamePlate(){
-        //Plate newPlate = Plate.getRandomPlate();
-        //_plateName.setText(newPlate.getPlateName());
-        //_restaurantName.setText(newPlate.getRestName());
-        //Random r = new Random();
-        //Integer randomPic = r.nextInt((int)newPlate.getUrls().size());
-        final List<Plate> getPlate = new ArrayList<>();
-        Plate.dataBase.getReference(Plate.RESTAURANTS).child("Dabush").child("Shachar Rat Kaparaalea").runTransaction(new Transaction.Handler() {
-            @NonNull
-            @Override
-            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-                Plate plate = mutableData.getValue(Plate.class);
-                if (plate != null)
-                {
-                    getPlate.add(plate);
-                }
 
-                return Transaction.success(mutableData);
-            }
+        Plate newPlate = Plate.getRandomPlate();
+        _plateName.setText(newPlate.getPlateName());
+        _restaurantName.setText(newPlate.getRestName());
+        Random r = new Random();
+        Integer randomPic = r.nextInt((int)newPlate.getUrls().size());
 
-            @Override
-            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
+        mImageUrls = new ArrayList<String>(newPlate.getUrls());
+        for (int i = 0; i < mImageUrls.size(); i++){
+            mImageUrls.set(i,CameraUpload.getUrl(mImageUrls.get(i)));
+        }
+        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
+        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
 
-            }
-        });
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), mImageUrls,1);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-
-        try {
-            Thread.sleep(2000);
-        } catch (java.lang.InterruptedException e) {}
-
-        Plate newPlate = getPlate.get(0);
-        System.out.println(CameraUpload.getUrl(newPlate.getUrls().get(0)));
-        //gameImage.setImageURI(Uri.parse(CameraUpload.getUrl(newPlate.getUrls().get(0))));
-        //URL url = new URL(newPlate.getUrls().get(0));
-        //Bitmap bmp = BitmapFactory.decodeStream(.openConnection().getInputStream());
-        //imageView.setImageBitmap(bmp);
-        //_plateName.setText(newPlate.getPlateName());
-        //_restaurantName.setText(newPlate.getRestName());
-        //gameImage.setImageURI(Uri.parse(CameraUpload.getUrl(newPlate.getUrls().get(randomPic))));
     }
 
 
