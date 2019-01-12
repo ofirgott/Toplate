@@ -110,7 +110,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             userLevel = "Master";
         }
         navResultsNum.setText("You can see up to "+numOfPlatesToShow+" results");
-        navReportStatus.setText("Reports: "+MainActivity.currentUser.getMarkedAsSpammer());
+        navReportStatus.setText("Times reported: "+MainActivity.currentUser.getMarkedAsSpammer());
         navPoints.setText("You have "+userPoints+" points!");
         navLevel.setText("Level: "+userLevel);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,

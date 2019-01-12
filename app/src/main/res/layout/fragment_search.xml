@@ -13,16 +13,18 @@
         android:layout_centerHorizontal="true"
         android:text="Search" />
 
+
     <com.hootsuite.nachos.NachoTextView
         android:id="@+id/nacho_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="What are you craving?"
-        android:background="@drawable/back"
+        android:background="@drawable/rounded_edittext"
         android:gravity="top"
+        android:padding="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="100dp"
-        android:minLines="5"
-        android:maxLines="5"/>
+        android:minLines="3"
+        android:maxLines="3"/>
 </RelativeLayout>
