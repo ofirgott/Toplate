@@ -139,6 +139,9 @@ public class User implements Serializable {
                 User user = mutableData.child(uid).getValue(User.class);
                 if (user != null)
                 {
+                    System.out.println(user.getUid());
+                    System.out.println(user.getName());
+
                     user.markedAsSpammer++;
                     mutableData.child(uid).setValue(user.toMap());
                 }

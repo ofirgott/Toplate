@@ -34,7 +34,6 @@ public class reportReview extends Activity {
         });
 
 
-        TextView t = (TextView) findViewById(R.id.reviewIndex);
-        t.setText("reviewIndex: "+reviewIndex);
+
     }
 }
