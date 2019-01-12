@@ -61,7 +61,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);
@@ -111,7 +111,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             userLevel = "Master";
         }
         navResultsNum.setText("You can see up to "+numOfPlatesToShow+" results");
-        navReportStatus.setText("Reports: "+MainActivity.currentUser.getMarkedAsSpammer());
+        navReportStatus.setText("Times reported: "+MainActivity.currentUser.getMarkedAsSpammer());
         navPoints.setText("You have "+userPoints+" points!");
         navLevel.setText("Level: "+userLevel);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,

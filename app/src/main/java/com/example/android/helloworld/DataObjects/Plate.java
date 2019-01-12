@@ -35,9 +35,8 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     static public String RESTAURANTS = "Restaurants";
     static public String TAGS = "Tags";
 
-    static public String[] AppTags = new String[]{"Tortilla Chips", "Melted Cheese", "Salsa", "Guacamole", "Mexico", "Jalapeno","Asian","Cilantro","Pasta"};
-    static public String[] AppRestaurants = new String[] {"Arepas","American Diner","American Burger","Azura","Amora Mio", "Alupa", "Vong", "Viva Mia", "Velvet Italiano","Mezcal","Joya","Jiraff"};
-    static public String[] AppAddresses = new String[] {"Rothschild 1, Tel Aviv","Rothschild 2, Tel Aviv","Rothschild 3, Tel Aviv","Rothschild 4, Tel Aviv","Rothschild 5, Tel Aviv","Rothschild 6, Tel Aviv","Rothschild 7, Tel Aviv","Rothschild 8, Tel Aviv","Rothschild 9, Tel Aviv","Habait Shel Oz","Habarzel 1","Habarzel 2"};
+    static public String[] AppTags = new String[]{"asian","mexican","italian", "noodles", "salmon", "dairy", "peanuts", "garlic", "indian","vegan","vegetarian","japanese","greek","chinese","american","spicy","sweet","salty","bitter","alcoholic","gluten","gluten free","cilantro","chocolate","fruits","cheese","melted cheese","tortilla","jalapeno","meat","guacamole","chicken","beef","schrimps","strawberry","cream","potatos","orange","banana", "rice","curry","ketchup","chimichuri","eggplant","eggs","tuna","whipped cream","berry","lettuce","onion","olives","tomato","cucumber","pepper","gauda","avocado","pizza","pasta","burger","borito","nachos","doritos","tacos","fries","sushi","ramen","salad","hummus","tahini","shnitzel","salsa", "kosher", "non-kosher", "fish"};
+
 
     static public Integer USER_LEVEL_1 = 100;
     static public Integer USER_LEVEL_2 = 250;
