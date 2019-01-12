@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/imageView3"
-        android:src="@drawable/background" />
+        android:src="@drawable/image1" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
