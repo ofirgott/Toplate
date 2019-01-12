@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                             0,
                             "",
                             new HashMap<String, Integer>());
-                    Log.i("AUTH","Creating new user for " + mFirebaseAuth.getCurrentUser().getDisplayName() + ". id = " + mFirebaseAuth.getCurrentUser().getUid());
+                    Log.i("AUTH","Creating new user for " + getDisplayName() + ". id = " + mFirebaseAuth.getCurrentUser().getUid());
 
                 }
 
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private String getDisplayName() {
+    public String getDisplayName() {
         if(mFirebaseAuth.getCurrentUser().getDisplayName() != null){
             return mFirebaseAuth.getCurrentUser().getDisplayName();
         }

@@ -66,7 +66,7 @@ public class ResultsActivity extends Fragment {
 
                 for(int i=0; i<reviews.size();i++){
                     if(reviews.get(i).Valid()) {
-                        reviewersNames[i] = reviews.get(i).getOwnerId();
+                        reviewersNames[i] = reviews.get(i).getName();
                         reviewsContent[i] = reviews.get(i).getVerbalComment();
                         ratings[i] = reviews.get(i).getRating();
                     }
