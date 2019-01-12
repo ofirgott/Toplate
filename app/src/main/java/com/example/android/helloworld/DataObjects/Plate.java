@@ -254,7 +254,6 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 Plate plate = mutableData.getValue(Plate.class);
                 if (plate != null && !newTags.isEmpty())
                 {
-                    MainActivity.currentUser.incrementCurrentUserScore(5);
                     plate.updateTags(newTags);
                     mutableData.child(TAGS).setValue(plate.Tags);
                     plate.insertToTags();
@@ -271,6 +270,11 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 }
             }
         });
+
+        if (!newTags.isEmpty())
+        {
+            MainActivity.currentUser.incrementCurrentUserScore(5);
+        }
     }
 
     public void updateUrlsTagsAndReviews(List<String> urls, List<String> tags, Review review) {
@@ -334,6 +338,9 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 }
             });
 
+            try {
+                Thread.sleep(2000);
+            } catch (java.lang.InterruptedException e) {}
         }
     }
 
@@ -408,15 +415,6 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 mutableData.child(PlateName).setValue(plate.toMap());
                 plate.insertToTags();
 
-                Integer scoreToAdd = 20;
-                if (!Urls.isEmpty())
-                {
-                    scoreToAdd = 30;
-                }
-
-                MainActivity.currentUser.incrementCurrentUserScore(scoreToAdd);
-                MainActivity.currentUser.incrementRestReviewsCounter(RestName);
-
                 return Transaction.success(mutableData);
             }
 
@@ -428,6 +426,15 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 }
             }
         });
+
+        Integer scoreToAdd = 20;
+        if (!Urls.isEmpty())
+        {
+            scoreToAdd = 30;
+        }
+
+        MainActivity.currentUser.incrementCurrentUserScore(scoreToAdd);
+        MainActivity.currentUser.incrementRestReviewsCounter(RestName);
     }
 
     public static List<Plate> getAllMatchingPlates(final List<String> tags, final Integer userPoints) {
@@ -567,6 +574,10 @@ final public class Plate implements Serializable, Comparable<Plate>  {
                 }
             }
         });
+
+        try {
+            Thread.sleep(2000);
+        } catch (java.lang.InterruptedException e) {}
     }
 
     public static Plate getRandomPlate()
@@ -625,7 +636,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
         });
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1500);
         } catch (java.lang.InterruptedException e) {}
 
         Integer counter = 0;
@@ -638,7 +649,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             }
 
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
             } catch (java.lang.InterruptedException e) {}
 
             counter++;
@@ -654,7 +665,4 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             return null;
         }
     }
-
-
-
 }

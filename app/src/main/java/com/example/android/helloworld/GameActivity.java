@@ -112,9 +112,8 @@ public class GameActivity extends Fragment {
         Plate newPlate = Plate.getRandomPlate();
         _plateName.setText(newPlate.getPlateName());
         _restaurantName.setText(newPlate.getRestName());
-        Random r = new Random();
-        Integer randomPic = r.nextInt((int)newPlate.getUrls().size());
-
+        nachoTextView.clearListSelection();
+        nachoTextView.setText(new ArrayList<String>());
         mImageUrls = new ArrayList<String>(newPlate.getUrls());
         for (int i = 0; i < mImageUrls.size(); i++){
             mImageUrls.set(i,CameraUpload.getUrl(mImageUrls.get(i)));
