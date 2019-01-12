@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.android.helloworld.DataObjects.Plate;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -185,11 +186,15 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
                                 // user is now deleted
-                                Toast.makeText(Search.this, "User successfully deleted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Search.this, "User successfully deleted", Toast.LENGTH_LONG).show();
                                 Log.d("AUTH", "User successfully deleted");
-                                finish();
+                                FirebaseAuth.getInstance().signOut();
+
+
                             }
                         });
+                finish();
+
                 break;
         }
 

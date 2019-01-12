@@ -1,5 +1,6 @@
 package com.example.android.helloworld.DataObjects;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -217,20 +218,25 @@ public class User implements Serializable {
 
     }
 
-    public static void deleteUserFromDB(String uid){
-        database.getReference().child("Users").child(uid).setValue(null , new DatabaseReference.CompletionListener() {
+    public static void deleteUserFromDB(final String uid){
 
+        DatabaseReference userRef = database.getReference().child("Users");
+        userRef.runTransaction(new Transaction.Handler() {
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                mutableData.child(uid).setValue(null);
+
+                return Transaction.success(mutableData);
+
+            }
 
             @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    Log.d("AUTH", "User could not be deleted from db.");
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
 
-                } else {
-                    Log.d("AUTH", "User deleted from db.");
-                }
             }
         });
+
+
+
     }
 
 

@@ -15,10 +15,14 @@ import com.firebase.ui.auth.data.client.AuthUiInitProvider;
 import com.firebase.ui.auth.util.data.ProviderUtils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseError;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     public static User currentUser = new User();
     private boolean knownUser = false;
+    private String TAG = "MainActivity";
 
     List<AuthUI.IdpConfig> providers = Arrays.asList(
 
@@ -60,14 +65,36 @@ public class MainActivity extends AppCompatActivity {
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //mFirebaseAuth.signOut();
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    setCurrentUser(user.getUid());
+                //FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser cu_user = firebaseAuth.getCurrentUser();
+                if (cu_user != null) {
+                    if(cu_user.getEmail() != null && !cu_user.isEmailVerified() && cu_user.getPhotoUrl() == null){
+                        for (int i=0; i < 10; i++)
+                        {
+                            Toast.makeText(getApplicationContext(),
+                                    cu_user.getDisplayName() + ", Please verify your account email address\n in order to log in.",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                        AuthUI.getInstance()
+                                .signOut(getApplicationContext())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        // user is now signed out
+                                        finish();
+                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                    }
+                                });
+                        return;
+
+                    }
+                    setCurrentUser(cu_user.getUid());
                     knownUser = true;
-                    Log.d("AUTH***", "User is " + user.getDisplayName() + ", user id = " + user.getUid());
+                    Log.d("AUTH***", "User is " + cu_user.getDisplayName() + ", user id = " + cu_user.getUid());
                     Intent a = new Intent(MainActivity.this, Search.class);
-                    Toast.makeText(MainActivity.this, "User Signed In. Hello " + user.getDisplayName() + ". You have " + currentUser.getScore()  + " points", Toast.LENGTH_LONG).show();
+                    for (int i=0; i < 10; i++) {
+                        Toast.makeText(MainActivity.this, "User Signed In. Hello " + (cu_user.getDisplayName() != null ? cu_user.getDisplayName()  : cu_user.getPhoneNumber())  + ".\n You have " + currentUser.getScore() + " points", Toast.LENGTH_LONG).show();
+                    }
                     startActivity(a);
 
                 } else {
@@ -143,24 +170,79 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        final FirebaseUser cu_user = FirebaseAuth.getInstance().getCurrentUser();
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 setCurrentUser(mFirebaseAuth.getCurrentUser().getUid());
+                //
 
-                //user logged in
+                if(cu_user.getEmail() != null && cu_user.getPhotoUrl() == null && cu_user.getPhotoUrl() == null) { //email auth
+                    if (!cu_user.isEmailVerified()) {
+                        /* Send Verification Email */
+                        cu_user.sendEmailVerification()
+                                .addOnCompleteListener(this, new OnCompleteListener() {
+                                    @Override
+                                    public void onComplete(@NonNull Task task) {
+                                        /* Check Success */
+                                        if (task.isSuccessful()) {
+                                            for (int i=0; i < 10; i++) {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "Verification Email Sent To: " + cu_user.getEmail() + ".\n Pleasse verify your account in order to log in.",
+                                                        Toast.LENGTH_LONG).show();
+                                            }
+                                            AuthUI.getInstance()
+                                                    .signOut(getApplicationContext())
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            // user is now signed out
+                                                            finish();
+                                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
-                Log.i("AUTH", "Current user id: " + mFirebaseAuth.getCurrentUser().getUid());
-                Log.i("AUTH", "Current Display Name: " + mFirebaseAuth.getCurrentUser().getDisplayName());
-                Log.i("AUTH", "Current photo url: " + mFirebaseAuth.getCurrentUser().getPhotoUrl());
 
-                Toast.makeText(MainActivity.this, "Welcome" +  mFirebaseAuth.getCurrentUser().getDisplayName()+" . You have points" , Toast.LENGTH_LONG).show();
-                if (!knownUser) {
-                    Intent intent = new Intent(this, Search.class);
-                    startActivity(intent);
+                                                        }
+                                                    });
+
+                                            return;
+                                        } else {
+                                            Log.e(TAG, "sendEmailVerification", task.getException());
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Failed To Send Verification Email!",
+                                                    Toast.LENGTH_SHORT).show();
+                                            AuthUI.getInstance().signOut(getApplicationContext());
+                                            finish();
+                                            return;
+                                        }
+                                    }
+                                });
+
+//                        for (int i=0; i < 3; i++) {
+//                            Toast.makeText(getApplicationContext(),
+//                                    "Your email account is not verified!\n Please verify your account in order to log in.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+
+//                        AuthUI.getInstance().signOut(getApplicationContext());
+//                        finish();
+//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                        startActivity(intent);
+
+                    }
+                }
+
+                    //user logged in
+
+                    Log.i("AUTH", "Current user id: " + mFirebaseAuth.getCurrentUser().getUid());
+                    Log.i("AUTH", "Current Display Name: " + mFirebaseAuth.getCurrentUser().getDisplayName());
+                    Log.i("AUTH", "Current photo url: " + mFirebaseAuth.getCurrentUser().getPhotoUrl());
+
+                    Toast.makeText(MainActivity.this, "Welcome " + mFirebaseAuth.getCurrentUser().getDisplayName() + "!" , Toast.LENGTH_LONG).show();
+                    if (!knownUser) {
+                        Intent intent = new Intent(this, Search.class);
+                        startActivity(intent);
+                    }
                 }
             }
         }
-    }
 
 
     @Override
