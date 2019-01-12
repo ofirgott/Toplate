@@ -85,6 +85,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
 
 
         int userPoints = MainActivity.currentUser.getScore();
+        System.out.println("user points: " + userPoints);
         navPoints.setText("You have "+userPoints+" points!");
 
         Integer numOfPlatesToShow;
@@ -130,6 +131,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
     }
     public static void UpdatePointsLevel(){
         int userPoints = MainActivity.currentUser.getScore();
+        System.out.println("user points: " + userPoints);
         navPoints.setText("You have "+userPoints+" points!");
         String userLevel;
         if (userPoints < Plate.USER_LEVEL_1)
