@@ -57,6 +57,7 @@ public class AddReviewActivity2 extends Fragment {
         View root = inflater.inflate(R.layout.activity_add_review_2, container, false);
 
 
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, plates);
 
         restaurantName = (TextView) root.findViewById(R.id.restaurantNameChosen);
@@ -78,7 +79,7 @@ public class AddReviewActivity2 extends Fragment {
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_addreview);
         nachoTextView.setAdapter(tagsAdapter);
         imgView = (ImageView)root.findViewById(R.id.capture_img);
-        camera = new CameraUpload(this,imgView,addPhotoButton);
+        camera = new CameraUpload(this,imgView,addPhotoButton,getContext());
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -86,12 +87,12 @@ public class AddReviewActivity2 extends Fragment {
                 image_path = camera.uploadImage();
                 List<String> tags = nachoTextView.getChipValues();
                 Plate.addToDB(platesComplete.getText().toString(),
-                        restaurantName.getText().toString(),
-                        restaurantAddress,
-                        tags,
-                        Arrays.asList("fakeUrl"),
-                        new Review(FirebaseAuth.getInstance().getCurrentUser().getUid(), ratingBar.getRating(), reviewContent.getText().toString()));
-
+                               restaurantName.getText().toString(),
+                                restaurantAddress,
+                                tags,
+                               Arrays.asList(camera.getImgPath()),
+                               new Review(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), ratingBar.getRating(), reviewContent.getText().toString()));
+                Search.UpdatePointsLevel();
                 getActivity().onBackPressed();
             }
         });

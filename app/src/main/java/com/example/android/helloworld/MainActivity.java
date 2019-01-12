@@ -105,11 +105,15 @@ public class MainActivity extends AppCompatActivity {
                                     .setAvailableProviders(providers)
                                     .setIsSmartLockEnabled(false)
                                     .setLogo(R.mipmap.ic_launcher_foreground)
-
                                     .build(),
                             RC_SIGN_IN
                     );
 
+                    Plate plate = Plate.getRandomPlate();
+                    if (plate != null)
+                    {
+                        System.out.println(plate.getPlateName() +", " + plate.getRestName());
+                    }
 
                 }
             }

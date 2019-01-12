@@ -10,32 +10,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/gameImage"
         android:layout_marginStart="87dp"
         android:layout_marginLeft="87dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="7dp"
+        android:layout_below="@id/recyclerViewGame"
         android:text="submit" />
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerViewGame"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/nacho_text_view_game"
+        ></android.support.v7.widget.RecyclerView>
     <Button
         android:id="@+id/skipButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/gameImage"
         android:layout_marginEnd="87dp"
         android:layout_marginRight="87dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="7dp"
+        android:layout_below="@id/recyclerViewGame"
         android:text="skip" />
 
-    <WebView
-        android:id="@+id/gameImage"
-        android:layout_width="242dp"
-        android:layout_height="232dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/nacho_text_view_game"
-        android:gravity="center"
-        android:layout_marginTop="5dp"/>
+
 
     <com.hootsuite.nachos.NachoTextView
         android:id="@+id/nacho_text_view_game"
@@ -43,10 +44,10 @@
         android:layout_height="wrap_content"
         android:hint="What describes this dish best?"
         android:background="@drawable/back"
-        android:layout_below="@id/gamePlateName"
+        android:layout_below="@id/gameRestaurantName"
         android:gravity="top"
         android:minLines="3"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:maxLines="3"
         android:layout_marginBottom="14dp"/>
 
@@ -76,4 +77,15 @@
         android:layout_marginTop="53dp"
         android:text="Restaurant Name"
         android:textSize="20sp" />
+    <TextView
+        android:id="@+id/counterPassed2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/submitButton"
+        android:text=""
+        android:textSize="25sp"
+        android:textColor="#ff0000"
+        />
 </RelativeLayout>
