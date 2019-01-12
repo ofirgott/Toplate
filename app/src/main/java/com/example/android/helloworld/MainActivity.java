@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         for (int i=0; i < 10; i++)
                         {
                             Toast.makeText(getApplicationContext(),
-                                    cu_user.getDisplayName() + ", Please verify your account email address\n in order to log in.",
+                                    cu_user.getDisplayName() + ", Please verify your account email \n address in order to log in.",
                                     Toast.LENGTH_LONG).show();
                         }
 

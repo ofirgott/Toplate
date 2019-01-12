@@ -42,6 +42,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
     private DrawerLayout drawer;
     public static TextView navPoints;
     public static TextView navLevel;
+    public static ImageView navImg;
     private String TAG = "Search";
 
     @Override
@@ -63,22 +64,20 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
-        ImageView img = (ImageView)  headerView.findViewById(R.id.imageView);
+        navImg = (ImageView)  headerView.findViewById(R.id.imageView);
         TextView navUsername = (TextView) headerView.findViewById(R.id.menuHelloName);
         navPoints = (TextView) headerView.findViewById(R.id.menuPoints);
         TextView navResultsNum = (TextView) headerView.findViewById(R.id.menuResultsNum);
         navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
         TextView navReportStatus = (TextView) headerView.findViewById(R.id.menuReportStatus);
         navUsername.setText("Hello "+MainActivity.currentUser.getName()+"!");
-//        if(MainActivity.currentUser.getImgUrl() != null){
-//            img.setImageURI(Uri.parse(MainActivity.currentUser.getImgUrl()));
-//        }
-//        else{
-//            img.setImageResource(R.drawable.com_facebook_profile_picture_blank_portrait);
-//        }
-        img.setMaxWidth(89);
-        img.setMaxHeight(96);
-        img.setVisibility(VISIBLE);
+        if(MainActivity.currentUser.getImgUrl() != null){
+            navImg.setImageURI(Uri.parse(MainActivity.currentUser.getImgUrl()));
+        }
+
+        navImg.setMaxWidth(89);
+        navImg.setMaxHeight(96);
+        navImg.setVisibility(VISIBLE);
         int userPoints = MainActivity.currentUser.getScore();
         navPoints.setText("You have "+userPoints+" points!");
 
