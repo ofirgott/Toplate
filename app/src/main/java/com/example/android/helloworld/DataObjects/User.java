@@ -47,7 +47,6 @@ public class User implements Serializable {
     }
 
 
-
     public void setUid(String uid) {
         this.uid = uid;
     }
@@ -114,9 +113,12 @@ public class User implements Serializable {
         userRef.runTransaction(new Transaction.Handler() {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 User user = mutableData.child(uid).getValue(User.class);
-                user.score -= value;
+                if (user != null)
+                {
+                    user.score -= value;
+                    mutableData.child(uid).setValue(user.toMap());
+                }
 
-                mutableData.child(uid).setValue(user.toMap());
                 return Transaction.success(mutableData);
             }
 
@@ -135,9 +137,11 @@ public class User implements Serializable {
         userRef.runTransaction(new Transaction.Handler() {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 User user = mutableData.child(uid).getValue(User.class);
-                user.markedAsSpammer++;
-
-                mutableData.child(uid).setValue(user.toMap());
+                if (user != null)
+                {
+                    user.markedAsSpammer++;
+                    mutableData.child(uid).setValue(user.toMap());
+                }
                 return Transaction.success(mutableData);
             }
 

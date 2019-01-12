@@ -61,7 +61,7 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
 
         Toolbar toolbar = findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view1);
         navigationView.setNavigationItemSelectedListener(this);

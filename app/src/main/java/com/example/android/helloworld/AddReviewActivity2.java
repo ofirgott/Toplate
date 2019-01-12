@@ -91,7 +91,7 @@ public class AddReviewActivity2 extends Fragment {
                                 restaurantAddress,
                                 tags,
                                Arrays.asList(camera.getImgPath()),
-                               new Review(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), ratingBar.getRating(), reviewContent.getText().toString()));
+                               new Review(MainActivity.currentUser.getUid(), MainActivity.currentUser.getName(), ratingBar.getRating(), reviewContent.getText().toString()));
                 Search.UpdatePointsLevel();
                 getActivity().onBackPressed();
             }

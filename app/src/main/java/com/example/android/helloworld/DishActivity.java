@@ -43,8 +43,6 @@ public class DishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dish);
 
-
-
         _plateName = findViewById(R.id.plateName);
         _restaurantName = findViewById(R.id.restaurantName);
         _restaurantAddress = findViewById(R.id.restaurantAddress);
@@ -137,9 +135,6 @@ public class DishActivity extends AppCompatActivity {
 
 
     private void initImageBitmaps() {
-        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
-        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
-        mImageUrls.add("https://firebasestorage.googleapis.com/v0/b/toplate-85a31.appspot.com/o/Images%2Ftoplate_img_1546792459152.jpg?alt=media&token=768d5a2d-42ca-44de-a084-089526957e77");
 
         initRecyclerView();
     }

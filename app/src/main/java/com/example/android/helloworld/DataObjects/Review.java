@@ -12,25 +12,36 @@ public class Review implements Serializable {
     private Float Rating;
     private Integer ReportsCounter;
     private String VerbalComment;
+    private String Name;
 
     public Review() {
         // Default constructor required for calls to DataSnapshot.getValue
     }
 
-    public Review(String ownerId, Float rating, String verbalComment)
+    public Review(String ownerId, String name, Float rating, String verbalComment)
     {
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = verbalComment;
         this.ReportsCounter = 0;
+        this.Name = name;
     }
 
-    public Review(String ownerId, Float rating)
+    public Review(String ownerId, String name, Float rating)
     {
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = "";
         this.ReportsCounter = 0;
+        this.Name = name;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     public String getOwnerId() {
