@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -36,6 +37,7 @@ import static android.view.View.VISIBLE;
 import static com.example.android.helloworld.DataObjects.User.deleteUserFromDB;
 import static com.example.android.helloworld.R.id.imageView;
 import static java.lang.Math.min;
+import static java.security.AccessController.getContext;
 
 public class Search extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -71,13 +73,17 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         navLevel = (TextView) headerView.findViewById(R.id.menuLevel);
         TextView navReportStatus = (TextView) headerView.findViewById(R.id.menuReportStatus);
         navUsername.setText("Hello "+MainActivity.currentUser.getName()+"!");
-        if(MainActivity.currentUser.getImgUrl() != null){
-            navImg.setImageURI(Uri.parse(MainActivity.currentUser.getImgUrl()));
+        if(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl() != null){
+            MainActivity.currentUser.setImgUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString() + "?height=500");
+            Picasso.get().load(MainActivity.currentUser.getImgUrl()).into(navImg);
+            //            navImg.setImageURI(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
+//            navImg.setMaxWidth(80);
+//            navImg.setMaxHeight(80);
+//            navImg.setVisibility(VISIBLE);
+
         }
 
-        navImg.setMaxWidth(89);
-        navImg.setMaxHeight(96);
-        navImg.setVisibility(VISIBLE);
+
         int userPoints = MainActivity.currentUser.getScore();
         navPoints.setText("You have "+userPoints+" points!");
 
