@@ -91,7 +91,7 @@ public class AddReviewActivity2 extends Fragment {
                                 restaurantAddress,
                                 tags,
                                Arrays.asList(camera.getImgPath()),
-                               new Review(MainActivity.currentUser.getUid(), MainActivity.currentUser.getName(), ratingBar.getRating(), reviewContent.getText().toString()));
+                               new Review(MainActivity.currentUser.getUid(), MainActivity.currentUser.getName(), ratingBar.getRating(), reviewContent.getText().toString(), new Integer(MainActivity.currentUser.getScore())));
                 Search.UpdatePointsLevel();
                 getActivity().onBackPressed();
             }

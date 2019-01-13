@@ -2,6 +2,7 @@ package com.example.android.helloworld;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -25,6 +26,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -76,10 +79,6 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
         if(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl() != null){
             MainActivity.currentUser.setImgUrl(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString() + "?height=500");
             Picasso.get().load(MainActivity.currentUser.getImgUrl()).into(navImg);
-            //            navImg.setImageURI(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl());
-//            navImg.setMaxWidth(80);
-//            navImg.setMaxHeight(80);
-//            navImg.setVisibility(VISIBLE);
 
         }
 
@@ -111,7 +110,21 @@ public class Search extends AppCompatActivity implements NavigationView.OnNaviga
             userLevel = "Master";
         }
         navResultsNum.setText("You can see up to "+numOfPlatesToShow+" results");
-        navReportStatus.setText("Times reported: "+MainActivity.currentUser.getMarkedAsSpammer());
+        navReportStatus.setText("Times reported: "+MainActivity.currentUser.getMarkedAsSpammer() + "   ");
+        if(MainActivity.currentUser.getMarkedAsSpammer() == 0){
+            navReportStatus.setTextColor(Color.parseColor("#00b200") );
+            navReportStatus.append(StringEscapeUtils.unescapeJava("\uD83D\uDE0D"));
+        }
+        else if(MainActivity.currentUser.getMarkedAsSpammer() > 0 && MainActivity.currentUser.getMarkedAsSpammer() < 5 ){
+            navReportStatus.append(StringEscapeUtils.unescapeJava("⚠️"));
+            navReportStatus.setTextColor(Color.parseColor("#ffa500"));
+        }
+        else{
+
+            navReportStatus.append("\nUser is BLOCKED!" + StringEscapeUtils.unescapeJava("⛔"));
+            navReportStatus.setTextColor(Color.parseColor("#D3D3D3"));
+        }
+
         navPoints.setText("You have "+userPoints+" points!");
         navLevel.setText("Level: "+userLevel);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this,drawer,toolbar,

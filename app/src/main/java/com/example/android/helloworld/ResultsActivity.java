@@ -19,6 +19,8 @@ import com.example.android.helloworld.DataObjects.Review;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -60,18 +62,30 @@ public class ResultsActivity extends Fragment {
                 arguments.putFloat("numStars",plate.getRating());
                 arguments.putStringArrayList("Urls",new ArrayList<String>(plate.getUrls()));
                 List<Review> reviews = plate.getReviews();
+
+                //Sort reviews by reviewer score
+                Collections.sort(reviews, new ReviewByScore());
+
+
+
                 String[] reviewersNames  = new String[reviews.size()];
+                ArrayList<Integer> reviewersScores  = new ArrayList(reviews.size());
+                for (int i = 0; i < reviews.size(); i++) {
+                    reviewersScores.add(0);
+                }
                 String[] reviewsContent = new String[reviews.size()];
                 float[] ratings = new float[reviews.size()];
 
                 for(int i=0; i<reviews.size();i++){
                     if(reviews.get(i).Valid()) {
                         reviewersNames[i] = reviews.get(i).getName();
+                        reviewersScores.set(i, reviews.get(i).getScoreOfOwner());
                         reviewsContent[i] = reviews.get(i).getVerbalComment();
                         ratings[i] = reviews.get(i).getRating();
                     }
                 }
                 arguments.putStringArray("reviewersNames",reviewersNames);
+                arguments.putIntegerArrayList("reviewersScores", (ArrayList<Integer>) reviewersScores);
                 arguments.putStringArray("reviewsContent",reviewsContent);
                 arguments.putFloatArray("ratings",ratings);
 
@@ -145,5 +159,11 @@ public class ResultsActivity extends Fragment {
 
             return view;
         }
+    }
+}
+
+ class ReviewByScore implements Comparator<Review> {
+    public int compare(Review a, Review b) {
+        return b.getScoreOfOwner().compareTo(a.getScoreOfOwner());
     }
 }

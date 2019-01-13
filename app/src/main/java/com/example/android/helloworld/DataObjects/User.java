@@ -210,6 +210,25 @@ public class User implements Serializable {
         return imgUrl;
     }
 
+    public static String getUserLevelNumber(Integer score){
+        if (score < Plate.USER_LEVEL_1)
+        {
+            return "Beginner";
+        }
+        else if (score < Plate.USER_LEVEL_2)
+        {
+            return "Medium";
+        }
+        else if (score < Plate.USER_LEVEL_3)
+        {
+            return "Pro";
+        }
+        else
+        {
+            return "Master";
+        }
+    }
+
     public void updateCurrentUserInDBOffline(final User user){
         DatabaseReference userRef = database.getReference().child("Users");
         userRef.runTransaction(new Transaction.Handler() {

@@ -23,6 +23,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 
 import com.example.android.helloworld.DataObjects.CameraUpload;
+import com.example.android.helloworld.DataObjects.User;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.ArrayList;
 
@@ -34,6 +37,7 @@ public class DishActivity extends AppCompatActivity {
     private TextView _plateTags;
     private RatingBar _ratingbar;
     private String[] _reviewers_names;
+    private ArrayList<Integer> _reviewers_scores;
     private String[] _reviewsContent;
     private float[] _ratings;
     private ArrayList<String> mImageUrls = new ArrayList<>();
@@ -56,6 +60,7 @@ public class DishActivity extends AppCompatActivity {
         _restaurantAddress.setText(b.getString("restaurantAddress"));
         _ratingbar.setRating(b.getFloat("numStars"));
         _reviewers_names = b.getStringArray("reviewersNames");
+        _reviewers_scores = b.getIntegerArrayList("reviewersScores");
         _reviewsContent = b.getStringArray("reviewsContent");
         _ratings = b.getFloatArray("ratings");
         mImageUrls = b.getStringArrayList("Urls");
@@ -113,6 +118,7 @@ public class DishActivity extends AppCompatActivity {
             view = getLayoutInflater().inflate(R.layout.review_item, null);
 
             TextView textview_reviewer_name = (TextView) view.findViewById(R.id.textView_reviewer_name);
+            TextView textview_reviewer_level = (TextView) view.findViewById(R.id.userLevel);
             TextView textview_review_content = (TextView) view.findViewById(R.id.textView_review_content);
             RatingBar ratingBar = (RatingBar) view.findViewById(R.id.ratingBar5);
             ImageButton reportReview = (ImageButton) view.findViewById(R.id.reportReview);
@@ -124,9 +130,12 @@ public class DishActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
-
+            String reviewerLevel = User.getUserLevelNumber(_reviewers_scores.get(position));
+            textview_reviewer_level.setText("Level: " + reviewerLevel);
             textview_reviewer_name.setText(_reviewers_names[position]);
+            if(reviewerLevel.equals("Master")){ // user is Master
+                textview_reviewer_name.append(" " + StringEscapeUtils.unescapeJava("\uD83D\uDC51"));
+            }
             textview_review_content.setText(_reviewsContent[position]);
             ratingBar.setRating(_ratings[position]);
             return view;

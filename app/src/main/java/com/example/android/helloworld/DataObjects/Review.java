@@ -1,8 +1,11 @@
 package com.example.android.helloworld.DataObjects;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 public class Review implements Serializable {
 
@@ -13,27 +16,30 @@ public class Review implements Serializable {
     private Integer ReportsCounter;
     private String VerbalComment;
     private String Name;
+    private Integer ScoreOfOwner;
 
     public Review() {
         // Default constructor required for calls to DataSnapshot.getValue
     }
 
-    public Review(String ownerId, String name, Float rating, String verbalComment)
+    public Review(String ownerId, String name, Float rating, String verbalComment, Integer scoreOfOwner)
     {
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = verbalComment;
         this.ReportsCounter = 0;
         this.Name = name;
+        this.ScoreOfOwner = scoreOfOwner;
     }
 
-    public Review(String ownerId, String name, Float rating)
+    public Review(String ownerId, String name, Float rating, Integer scoreOfOwner)
     {
         this.OwnerId = ownerId;
         this.Rating = rating;
         this.VerbalComment = "";
         this.ReportsCounter = 0;
         this.Name = name;
+        this.ScoreOfOwner = scoreOfOwner;
     }
 
     public String getName() {
@@ -44,12 +50,20 @@ public class Review implements Serializable {
         Name = name;
     }
 
-    public String getOwnerId() {
-        return OwnerId;
+    public void setScoreOfOwner(Integer scoreOfOwner) {
+         ScoreOfOwner = scoreOfOwner;
+    }
+
+    public Integer getScoreOfOwner() {
+        return this.ScoreOfOwner;
     }
 
     public Integer getReportsCounter() {
         return ReportsCounter;
+    }
+
+    public String getOwnerId() {
+        return OwnerId;
     }
 
     public void setReportsCounter(Integer reportsCounter) {
@@ -77,4 +91,9 @@ public class Review implements Serializable {
     }
 
     public boolean Valid() { return ReportsCounter < MAX_ALLOWED_REPORTS; }
+
+
 }
+
+
+
