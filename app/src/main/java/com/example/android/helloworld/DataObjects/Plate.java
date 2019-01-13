@@ -589,42 +589,58 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 if (mutableData.getChildrenCount() > 0) {
                     Random r = new Random();
-                    Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
-                    Integer counter = 0;
+                    boolean replacePlate = true;
+                    int cntr = 0;
+                    while (cntr < 2 && replacePlate) {
+                        cntr++;
 
-                    for (MutableData child : mutableData.getChildren())
-                    {
-                        if (counter == restRand)
-                        {
-                            System.out.println("random rest: " + restRand + ", " + child.getKey());
+                        Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
+                        Integer counter = 0;
 
-                            Integer plateRand = r.nextInt((int) child.getChildrenCount());
-                            int plateCounter = 0;
-                            for (MutableData newChild : child.getChildren())
-                            {
-                                if (plateCounter == plateRand)
-                                {
-                                    Plate plate = newChild.getValue(Plate.class);
-                                    System.out.println("plate: " + plateRand + ", " + plate.getPlateName());
-                                    if (!randomPlate.isEmpty())
-                                    {
-                                        randomPlate.clear();
+                        for (MutableData child : mutableData.getChildren()) {
+                            if (counter == restRand) {
+                                //System.out.println("random rest: " + restRand + ", " + child.getKey());
+
+                                Integer plateRand = r.nextInt((int) child.getChildrenCount());
+                                int plateCounter = 0;
+                                for (MutableData newChild : child.getChildren()) {
+                                    if (plateCounter == plateRand) {
+                                        Plate plate = newChild.getValue(Plate.class);
+
+                                        int lenTags = plate.Tags.size();
+                                        int numTagsGiven = 0;
+                                        int maxTagsGiven = Collections.max(plate.Tags.values());
+                                        for (String tag : plate.Tags.keySet()) {
+                                            int timesGiven = plate.Tags.get(tag);
+                                            numTagsGiven += timesGiven;
+                                        }
+
+                                        //System.out.println("plate: " + plateRand + ", " + plate.getPlateName());
+                                        if (!randomPlate.isEmpty()) {
+                                            randomPlate.clear();
+                                        }
+
+
+                                        if (replacePlate && (numTagsGiven <= 100 || lenTags <= 5 || maxTagsGiven <= 10)){
+                                            replacePlate = false;
+                                        }
+
+
+                                        randomPlate.add(plate);
+                                        System.out.println("plate in list: " + randomPlate.get(0).getPlateName());
+                                        break;
                                     }
-                                    randomPlate.add(plate);
-                                    System.out.println("plate in list: " + randomPlate.get(0).getPlateName());
-                                    break;
+
+                                    plateCounter++;
                                 }
 
-                                plateCounter ++;
+                                break;
                             }
 
-                            break;
+                            counter++;
                         }
-
-                        counter++;
                     }
                 }
-
                 return Transaction.success(mutableData);
             }
 
