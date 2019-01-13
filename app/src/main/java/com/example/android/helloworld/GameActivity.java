@@ -51,28 +51,27 @@ public class GameActivity extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root =inflater.inflate(R.layout.activity_game,container,false);
-        //slideHolder = (WebView) root.findViewById(R.id.gameImage);
+
+        // definitions
         final Plate randomPlate;
         randomPlate = Plate.getRandomPlate();
         Random r = new Random();
         Integer randomPic = r.nextInt((int)randomPlate.getUrls().size());
-        //slideHolder.loadUrl(randomPlate.getUrls().get(restRand));
         _plateName = (TextView) root.findViewById(R.id.gamePlateName);
         _plateName.setText(randomPlate.getPlateName());
         _restaurantName = (TextView) root.findViewById(R.id.gameRestaurantName);
         _restaurantName.setText(randomPlate.getRestName());
-        //System.out.println(randomPlate.getPlateName());
         ArrayAdapter<String> tagsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view_game);
         nachoTextView.setAdapter(tagsAdapter);
         submitButton = (Button)root.findViewById(R.id.submitButton);
         skipButton = (Button)root.findViewById(R.id.skipButton);
-
         mImageUrls = new ArrayList<String>(randomPlate.getUrls());
         for (int i = 0; i < mImageUrls.size(); i++){
             mImageUrls.set(i,CameraUpload.getUrl(mImageUrls.get(i)));
         }
 
+        // recycler view
         recyclerView = root.findViewById(R.id.recyclerViewGame);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), mImageUrls,1);
         recyclerView.setAdapter(adapter);
@@ -83,6 +82,8 @@ public class GameActivity extends Fragment {
             submitButton.setEnabled(false);
             skipButton.setEnabled(false);
         }
+
+        //listeners
         submitButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

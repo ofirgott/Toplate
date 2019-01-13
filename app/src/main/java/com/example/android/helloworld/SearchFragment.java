@@ -30,6 +30,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         Button searchButton = (Button) root.findViewById(R.id.submitButton);
 
+        // listeners
         searchButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -50,6 +51,7 @@ public class SearchFragment extends Fragment {
         });
 
 
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, Plate.AppTags);
         nachoTextView = (NachoTextView)root.findViewById(R.id.nacho_text_view);
         nachoTextView.setAdapter(adapter);
@@ -63,3 +65,4 @@ public class SearchFragment extends Fragment {
 
     }
 }
+    
