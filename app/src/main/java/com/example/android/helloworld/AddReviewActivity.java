@@ -96,7 +96,7 @@ public class AddReviewActivity extends Fragment {
 
                  else {
                     autocompleteFragment.setText("");
-                    Toast.makeText(getActivity(), "Place is not a restaurant\nplease enter again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Place is not a restaurant\nplease enter again", Toast.LENGTH_SHORT).show();
                 }
             }
 

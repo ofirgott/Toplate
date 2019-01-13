@@ -35,7 +35,7 @@ final public class Plate implements Serializable, Comparable<Plate>  {
     static public String RESTAURANTS = "Restaurants";
     static public String TAGS = "Tags";
 
-    static public String[] AppTags = new String[]{"asian","mexican","italian", "noodles", "salmon", "dairy", "peanuts", "garlic", "indian","vegan","vegetarian","japanese","greek","chinese","american","spicy","sweet","salty","bitter","alcoholic","gluten","gluten free","cilantro","chocolate","fruits","cheese","melted cheese","tortilla","jalapeno","meat","guacamole","chicken","beef","shrimps","strawberry","cream","potatos","orange","banana", "rice","curry","ketchup","chimichuri","eggplant","eggs","tuna","whipped cream","berry","lettuce","onion","olives","tomato","cucumber","pepper","gauda","avocado","pizza","pasta","burger","borito","nachos","doritos","tacos","fries","sushi","ramen","salad","hummus","tahini","shnitzel","salsa", "kosher", "non-kosher", "fish"};
+    static public String[] AppTags = new String[]{"dessert","asian","mexican","italian", "noodles", "salmon", "dairy", "peanuts", "garlic", "indian","vegan","vegetarian","japanese","greek","chinese","american","spicy","sweet","salty","bitter","alcoholic","gluten","gluten free","cilantro","chocolate","fruits","cheese","melted cheese","tortilla","jalapeno","meat","guacamole","chicken","beef","shrimps","strawberry","cream","potatos","orange","banana", "rice","curry","ketchup","chimichuri","eggplant","eggs","tuna","whipped cream","berry","lettuce","onion","olives","tomato","cucumber","pepper","gauda","avocado","pizza","pasta","burger","borito","nachos","doritos","tacos","fries","sushi","ramen","salad","hummus","tahini","shnitzel","salsa", "kosher", "non-kosher", "fish","baby leaf salad","butter","breakfast","french","croissant","rocket","spinach"};
 
 
     static public Integer USER_LEVEL_1 = 100;
@@ -589,42 +589,58 @@ final public class Plate implements Serializable, Comparable<Plate>  {
             public Transaction.Result doTransaction(MutableData mutableData) {
                 if (mutableData.getChildrenCount() > 0) {
                     Random r = new Random();
-                    Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
-                    Integer counter = 0;
+                    boolean replacePlate = true;
+                    int cntr = 0;
+                    while (cntr < 2 && replacePlate) {
+                        cntr++;
 
-                    for (MutableData child : mutableData.getChildren())
-                    {
-                        if (counter == restRand)
-                        {
-                            System.out.println("random rest: " + restRand + ", " + child.getKey());
+                        Integer restRand = r.nextInt((int) mutableData.getChildrenCount());
+                        Integer counter = 0;
 
-                            Integer plateRand = r.nextInt((int) child.getChildrenCount());
-                            int plateCounter = 0;
-                            for (MutableData newChild : child.getChildren())
-                            {
-                                if (plateCounter == plateRand)
-                                {
-                                    Plate plate = newChild.getValue(Plate.class);
-                                    System.out.println("plate: " + plateRand + ", " + plate.getPlateName());
-                                    if (!randomPlate.isEmpty())
-                                    {
-                                        randomPlate.clear();
+                        for (MutableData child : mutableData.getChildren()) {
+                            if (counter == restRand) {
+                                //System.out.println("random rest: " + restRand + ", " + child.getKey());
+
+                                Integer plateRand = r.nextInt((int) child.getChildrenCount());
+                                int plateCounter = 0;
+                                for (MutableData newChild : child.getChildren()) {
+                                    if (plateCounter == plateRand) {
+                                        Plate plate = newChild.getValue(Plate.class);
+
+                                        int lenTags = plate.Tags.size();
+                                        int numTagsGiven = 0;
+                                        int maxTagsGiven = Collections.max(plate.Tags.values());
+                                        for (String tag : plate.Tags.keySet()) {
+                                            int timesGiven = plate.Tags.get(tag);
+                                            numTagsGiven += timesGiven;
+                                        }
+
+                                        //System.out.println("plate: " + plateRand + ", " + plate.getPlateName());
+                                        if (!randomPlate.isEmpty()) {
+                                            randomPlate.clear();
+                                        }
+
+
+                                        if (replacePlate && (numTagsGiven <= 100 || lenTags <= 5 || maxTagsGiven <= 10)){
+                                            replacePlate = false;
+                                        }
+
+
+                                        randomPlate.add(plate);
+                                        System.out.println("plate in list: " + randomPlate.get(0).getPlateName());
+                                        break;
                                     }
-                                    randomPlate.add(plate);
-                                    System.out.println("plate in list: " + randomPlate.get(0).getPlateName());
-                                    break;
+
+                                    plateCounter++;
                                 }
 
-                                plateCounter ++;
+                                break;
                             }
 
-                            break;
+                            counter++;
                         }
-
-                        counter++;
                     }
                 }
-
                 return Transaction.success(mutableData);
             }
 

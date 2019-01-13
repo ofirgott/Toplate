@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/recyclerView2"
         android:orientation="horizontal"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:layout_below="@id/plateTags"
         ></android.support.v7.widget.RecyclerView>
 
@@ -35,7 +35,7 @@
     <ListView
         android:id="@+id/reviewsList"
         android:layout_width="match_parent"
-        android:layout_height="197dp"
+        android:layout_height="220dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"

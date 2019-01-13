@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             Toast.makeText(getApplicationContext(),
                                     cu_user.getDisplayName() + ", Please verify your account email \n address in order to log in.",
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
 
                         AuthUI.getInstance()
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("AUTH***", "User is " + cu_user.getDisplayName() + ", user id = " + cu_user.getUid());
                     Intent a = new Intent(MainActivity.this, Search.class);
                     for (int i=0; i < 10; i++) {
-                        Toast.makeText(MainActivity.this, "User Signed In. Hello " + (cu_user.getDisplayName() != null ? cu_user.getDisplayName()  : cu_user.getPhoneNumber())  + ".\n You have " + currentUser.getScore() + " points", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "User Signed In. Hello " + (cu_user.getDisplayName() != null ? cu_user.getDisplayName()  : cu_user.getPhoneNumber())  + ".\n You have " + currentUser.getScore() + " points", Toast.LENGTH_SHORT).show();
                     }
                     startActivity(a);
 
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                                             for (int i=0; i < 10; i++) {
                                                 Toast.makeText(getApplicationContext(),
                                                         "Verification Email Sent To: " + cu_user.getEmail() + ".\n Pleasse verify your account in order to log in.",
-                                                        Toast.LENGTH_LONG).show();
+                                                        Toast.LENGTH_SHORT).show();
                                             }
                                             AuthUI.getInstance()
                                                     .signOut(getApplicationContext())
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("AUTH", "Current Display Name: " + mFirebaseAuth.getCurrentUser().getDisplayName());
                     Log.i("AUTH", "Current photo url: " + mFirebaseAuth.getCurrentUser().getPhotoUrl());
 
-                    Toast.makeText(MainActivity.this, "Welcome " + mFirebaseAuth.getCurrentUser().getDisplayName() + "!" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Welcome " + mFirebaseAuth.getCurrentUser().getDisplayName() + "!" , Toast.LENGTH_SHORT).show();
                     if (!knownUser) {
                         Intent intent = new Intent(this, Search.class);
                         startActivity(intent);
