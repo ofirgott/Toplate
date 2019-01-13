@@ -29,6 +29,7 @@ public class IntroActivity extends AppIntro {
         addSlide(new Intro1());
         addSlide(new Intro2());
         addSlide(new Intro3());
+        addSlide(new Intro4());
         //addSlide(thirdFragment);
         //addSlide(fourthFragment);
 
@@ -98,6 +99,15 @@ public class IntroActivity extends AppIntro {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             return inflater.inflate(R.layout.fragment_intro3, container, false);
+        }
+    }
+
+    public static class Intro4 extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_intro4, container, false);
         }
     }
 
